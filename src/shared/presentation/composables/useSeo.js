@@ -1,1 +1,1 @@
-export * from './useSeo.ts';
+export * from './useSeo';

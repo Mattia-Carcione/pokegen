@@ -1,5 +1,5 @@
 import { watch } from 'vue';
-import { createPokemonArticleStructuredData, createPokemonDatasetStructuredData, createPokemonStructuredData, createStructuredData, setSeoTags, setStructuredData } from '@/shared/presentation/composables/useSeo';
+import { createPokemonArticleStructuredData, createPokemonDatasetStructuredData, createPokemonStructuredData, createStructuredData, setSeoTags, setStructuredData } from '@/shared/presentation/composables/useSeo.ts';
 import { DetailViewModel } from '@/modules/pokegen/presentation/viewmodels/DetailViewModel';
 
 export const usePokegenHomeSeo = (route: any, generationIdRef: { value?: string | null }) => {
