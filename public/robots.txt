@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pokegen.example.com/sitemap.xml
+Sitemap: https://mattia-carcione.github.io/pokegen/sitemap.xml

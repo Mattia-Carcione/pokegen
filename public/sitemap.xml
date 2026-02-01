@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://pokegen.example.com/</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/privacy</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/terms</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/generation/1</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/generation/1</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/generation/2</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/generation/2</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/generation/3</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/generation/3</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/generation/4</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/generation/4</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/generation/5</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/generation/5</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/generation/6</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/generation/6</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/generation/7</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/generation/7</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/generation/8</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/generation/8</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pokegen.example.com/generation/9</loc>
+    <loc>https://mattia-carcione.github.io/pokegen/generation/9</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
