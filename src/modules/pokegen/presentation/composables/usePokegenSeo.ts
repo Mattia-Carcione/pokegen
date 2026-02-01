@@ -1,5 +1,5 @@
 import { watch } from 'vue';
-import { createPokemonStructuredData, createStructuredData, setSeoTags, setStructuredData } from '@/shared/presentation/composables/useSeo';
+import { createPokemonArticleStructuredData, createPokemonDatasetStructuredData, createPokemonStructuredData, createStructuredData, setSeoTags, setStructuredData } from '@/shared/presentation/composables/useSeo';
 import { DetailViewModel } from '@/modules/pokegen/presentation/viewmodels/DetailViewModel';
 
 export const usePokegenHomeSeo = (route: any, generationIdRef: { value?: string | null }) => {
@@ -7,7 +7,7 @@ export const usePokegenHomeSeo = (route: any, generationIdRef: { value?: string 
         if (typeof search === 'string' && search.length >= 3) {
             const title = `Search: ${search}`;
             const description = `Search results for "${search}" in PokéGen.`;
-            setSeoTags({ title, description });
+            setSeoTags({ title, description, robots: 'noindex, nofollow' });
             setStructuredData(createStructuredData({
                 title,
                 description,
@@ -24,10 +24,12 @@ export const usePokegenHomeSeo = (route: any, generationIdRef: { value?: string 
         if (generationId) {
             const title = `Generation ${generationId}`;
             const description = `Browse all Pokémon from Generation ${generationId} with stats, types, and evolutions.`;
-            setSeoTags({ title, description });
+            const image = `/og/generation-${encodeURIComponent(generationId)}.svg`;
+            setSeoTags({ title, description, image });
             setStructuredData(createStructuredData({
                 title,
                 description,
+                image,
                 pageType: 'CollectionPage',
                 url: window.location.href,
                 breadcrumb: [
@@ -51,27 +53,31 @@ export const usePokegenDetailSeo = (pkmDetailController: any) => {
             const description = pokemon.genus
                 ? `${pokemon.genus} Find stats, types, evolutions, and lore for ${pokemon.name}.`
                 : `Find stats, types, evolutions, and lore for ${pokemon.name}.`;
+            const image = `/og/pokemon-${encodeURIComponent(pokemon.name)}.svg`;
 
             setSeoTags({
                 title,
                 description,
-                image: pokemon.sprite,
+                image,
                 url: window.location.href,
                 type: 'article',
             });
 
             const pokemonGraph = createPokemonStructuredData(pokemon, window.location.href);
+            const pokemonArticle = createPokemonArticleStructuredData(pokemon, window.location.href, image);
+            const pokemonDataset = createPokemonDatasetStructuredData(pokemon, window.location.href);
+            const extraGraph = [pokemonGraph, pokemonArticle, pokemonDataset].filter(Boolean);
             setStructuredData(createStructuredData({
                 title,
                 description,
-                image: pokemon.sprite,
+                image,
                 url: window.location.href,
                 pageType: 'ItemPage',
                 breadcrumb: [
                     { name: 'Home', url: '/' },
                     { name: pokemon.name, url: `/pokemon/${pokemon.name}` },
                 ],
-                extraGraph: pokemonGraph ? [pokemonGraph] : [],
+                extraGraph,
             }));
         }
     }, { immediate: true });

@@ -20,6 +20,7 @@ export const routes = [
                 title: 'Page not found',
                 description: 'The page you are looking for does not exist. Return to PokéGen home.',
                 pageType: 'WebPage',
+                robots: 'noindex, nofollow',
                 breadcrumb: [
                     { name: 'Home', url: '/' },
                     { name: '404', url: '/404' },

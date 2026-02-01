@@ -42,6 +42,15 @@ const readPokemonList = () => {
     .filter((name) => typeof name === 'string' && name.length > 0);
 };
 
+const getFileLastmod = (filePath, fallback) => {
+  try {
+    const stats = fs.statSync(filePath);
+    return stats.mtime.toISOString().split('T')[0];
+  } catch {
+    return fallback;
+  }
+};
+
 const escapeXml = (value) => value
   .replace(/&/g, '&amp;')
   .replace(/</g, '&lt;')
@@ -49,22 +58,32 @@ const escapeXml = (value) => value
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&apos;');
 
-const buildUrlTag = ({ loc, changefreq, priority }) => [
+const buildUrlTag = ({ loc, changefreq, priority, lastmod }) => [
   '  <url>',
   `    <loc>${escapeXml(loc)}</loc>`,
+  `    <lastmod>${lastmod}</lastmod>`,
   `    <changefreq>${changefreq}</changefreq>`,
   `    <priority>${priority}</priority>`,
   '  </url>',
 ].join('\n');
 
 const pokemonNames = readPokemonList();
+const lastmod = new Date().toISOString().split('T')[0];
+const pokemonLastmod = getFileLastmod(pokeapiListPath, lastmod);
+
 const pokemonUrls = pokemonNames.map((name) => ({
   loc: `${BASE_URL}/pokemon/${encodeURIComponent(name)}`,
+  lastmod: pokemonLastmod,
   changefreq: 'weekly',
   priority: '0.6',
 }));
 
-const allUrls = [...staticUrls, ...pokemonUrls];
+const staticUrlsWithLastmod = staticUrls.map((entry) => ({
+  ...entry,
+  lastmod,
+}));
+
+const allUrls = [...staticUrlsWithLastmod, ...pokemonUrls];
 
 const xml = [
   '<?xml version="1.0" encoding="UTF-8"?>',

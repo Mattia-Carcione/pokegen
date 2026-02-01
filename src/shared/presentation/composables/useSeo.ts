@@ -1,20 +1,33 @@
+import { SITE_URL } from '@/config/appConfig';
+
 const SITE_NAME = 'PokéGen';
 const DEFAULT_DESCRIPTION = 'Explore Pokémon by generation, search by name, and view detailed stats, evolutions, and lore with PokéGen.';
-const DEFAULT_IMAGE = '/poke-icon.svg';
+const DEFAULT_IMAGE = '/og/default.svg';
+const OG_IMAGE_WIDTH = '1200';
+const OG_IMAGE_HEIGHT = '630';
+const DEFAULT_TWITTER_CARD = 'summary_large_image';
 const DEFAULT_TYPE = 'website';
 const DEFAULT_LOCALE = 'en_US';
 
 const isAbsoluteUrl = (value?: string) => /^https?:\/\//i.test(value || '');
 
+const getSiteOrigin = () => {
+  if (import.meta?.env?.PROD && SITE_URL) {
+    return SITE_URL.replace(/\/$/, '');
+  }
+  return window.location.origin;
+};
+
 const toAbsoluteUrl = (value?: string) => {
+  const origin = getSiteOrigin();
   if (!value) {
-    return window.location.origin + '/';
+    return origin + '/';
   }
   if (isAbsoluteUrl(value)) {
     return value;
   }
   const normalized = value.startsWith('/') ? value : `/${value}`;
-  return `${window.location.origin}${normalized}`;
+  return `${origin}${normalized}`;
 };
 
 const ensureMeta = (attr: string, key: string) => {
@@ -75,13 +88,14 @@ export const createStructuredData = ({
 }) => {
   const absoluteUrl = toAbsoluteUrl(url || window.location.href);
   const absoluteImage = toAbsoluteUrl(image || DEFAULT_IMAGE);
+  const siteHome = toAbsoluteUrl('/');
 
   const graph: Array<Record<string, unknown>> = [
     {
       '@type': 'Organization',
-      '@id': `${absoluteUrl}#organization`,
+      '@id': `${siteHome}#organization`,
       name: SITE_NAME,
-      url: absoluteUrl,
+      url: siteHome,
       logo: {
         '@type': 'ImageObject',
         url: absoluteImage,
@@ -89,12 +103,12 @@ export const createStructuredData = ({
     },
     {
       '@type': 'WebSite',
-      '@id': `${absoluteUrl}#website`,
+      '@id': `${siteHome}#website`,
       name: SITE_NAME,
-      url: absoluteUrl,
+      url: siteHome,
       potentialAction: {
         '@type': 'SearchAction',
-        target: `${absoluteUrl}?search={search_term_string}`,
+        target: `${siteHome}?search={search_term_string}`,
         'query-input': 'required name=search_term_string',
       },
     },
@@ -171,6 +185,61 @@ export const createPokemonStructuredData = (pokemon: any, url?: string) => {
   };
 };
 
+export const createPokemonArticleStructuredData = (pokemon: any, url?: string, image?: string) => {
+  if (!pokemon) return null;
+  const absoluteUrl = toAbsoluteUrl(url || window.location.href);
+  const absoluteImage = toAbsoluteUrl(image || pokemon.sprite || DEFAULT_IMAGE);
+  const description = pokemon.genus
+    ? `${pokemon.genus} Find stats, types, evolutions, and lore for ${pokemon.name}.`
+    : `Find stats, types, evolutions, and lore for ${pokemon.name}.`;
+
+  return {
+    '@type': 'Article',
+    '@id': `${absoluteUrl}#article`,
+    headline: pokemon.name,
+    description,
+    image: [absoluteImage],
+    mainEntityOfPage: absoluteUrl,
+    author: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      logo: {
+        '@type': 'ImageObject',
+        url: toAbsoluteUrl(DEFAULT_IMAGE),
+      },
+    },
+  };
+};
+
+export const createPokemonDatasetStructuredData = (pokemon: any, url?: string) => {
+  if (!pokemon) return null;
+  const absoluteUrl = toAbsoluteUrl(url || window.location.href);
+  const description = pokemon.genus
+    ? `${pokemon.genus} dataset for ${pokemon.name}.`
+    : `Dataset for ${pokemon.name}.`;
+  const keywords = Array.isArray(pokemon.types)
+    ? pokemon.types.map((type: { name: string }) => type.name)
+    : [];
+
+  return {
+    '@type': 'Dataset',
+    '@id': `${absoluteUrl}#dataset`,
+    name: `${pokemon.name} dataset`,
+    description,
+    url: absoluteUrl,
+    creator: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+    },
+    keywords,
+    license: 'https://pokeapi.co/docs/v2',
+  };
+};
+
 export const setStructuredData = (data: Record<string, unknown>) => {
   if (!data) return;
   const id = 'structured-data';
@@ -220,13 +289,17 @@ export const setSeoTags = ({
   setMetaContent('property', 'og:type', finalType);
   setMetaContent('property', 'og:url', finalUrl);
   setMetaContent('property', 'og:image', finalImage);
+  setMetaContent('property', 'og:image:width', OG_IMAGE_WIDTH);
+  setMetaContent('property', 'og:image:height', OG_IMAGE_HEIGHT);
+  setMetaContent('property', 'og:image:alt', title || SITE_NAME);
   setMetaContent('property', 'og:site_name', SITE_NAME);
   setMetaContent('property', 'og:locale', finalLocale);
 
-  setMetaContent('name', 'twitter:card', twitterCard || 'summary');
+  setMetaContent('name', 'twitter:card', twitterCard || DEFAULT_TWITTER_CARD);
   setMetaContent('name', 'twitter:title', finalTitle);
   setMetaContent('name', 'twitter:description', finalDescription);
   setMetaContent('name', 'twitter:image', finalImage);
+  setMetaContent('name', 'twitter:image:alt', title || SITE_NAME);
 
   setLinkTag('canonical', finalUrl);
 };
@@ -251,6 +324,9 @@ export const applyRouteSeo = (route: any) => {
     image,
     url,
     type: seo.type,
+    robots: seo.robots,
+    twitterCard: seo.twitterCard,
+    locale: seo.locale,
   });
 
   const structuredData = createStructuredData({
