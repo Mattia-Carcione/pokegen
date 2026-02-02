@@ -1,14 +1,14 @@
 import { safeFetch } from "@/core/utils/async/SafeFetch";
 import { Pokemon } from "../../domain/entities/Pokemon";
 import { IPokemonRepository } from "../../domain/repositories/IPokemonRepository";
-import { IEvolutionSpriteEnricherService } from "./contracts/IEvolutionSpriteEnricherService";
+import { ISpriteEnricherService } from "./contracts/ISpriteEnricherService";
 import { ILogger } from "@/core/contracts/infrastructure/logger/ILogger";
 import { ServiceError } from "@/core/errors/ServiceError";
 
 /**
  * Servizio per l'arricchimento delle sprite di evoluzione dei Pokémon.
  */
-export class EvolutionSpriteEnricherService implements IEvolutionSpriteEnricherService {
+export class EvolutionSpriteEnricherService implements ISpriteEnricherService {
     constructor(
         private readonly repository: IPokemonRepository,
         private readonly logger: ILogger,

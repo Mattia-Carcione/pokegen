@@ -22,7 +22,7 @@ usePokegenDetailSeo(pkmDetailController);
 </script>
 
 <template>
-    <section id="detail-view-section" aria-label="details view section" class="detail-view-wrapper">
+    <section id="detail-view-section" aria-label="details view section" class="detail-view-wrapper my-3">
         <template v-if="pkmDetailController.isLoading.value">
             <Loader />
         </template>

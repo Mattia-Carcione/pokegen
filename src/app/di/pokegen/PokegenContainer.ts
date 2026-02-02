@@ -37,7 +37,6 @@ import { EvolutionChainDto } from "@/modules/pokegen/data/models/dtos/EvolutionC
 import { EvolutionChainDataSource } from "@/modules/pokegen/data/datasources/EvolutionChainDataSource";
 import { INavigationPokemonLoaderService } from "@/modules/pokegen/application/services/contracts/INavigationPokemonLoaderService";
 import { NavigationPokemonLoaderService } from "@/modules/pokegen/application/services/NavigationPokemonLoaderService";
-import { IEvolutionSpriteEnricherService } from "@/modules/pokegen/application/services/contracts/IEvolutionSpriteEnricherService";
 import { EvolutionSpriteEnricherService } from "@/modules/pokegen/application/services/EvolutionSpriteEnricherService";
 import { PokeApiRepository } from "@/shared/data/repositories/PokeApiRepository";
 import { IGetPokeApiUseCase } from "@/shared/domain/usecases/IGetPokeApiUseCase";
@@ -51,6 +50,11 @@ import { IUsePokemonController } from "@/modules/pokegen/presentation/controller
 import { IGetSearchPokemonUseCase } from "@/modules/pokegen/domain/usecases/IGetSearchPokemonUseCase";
 import { GetSearchPokemonUseCase } from "@/modules/pokegen/application/usecases/GetSearchPokemonUseCase";
 import { ICache } from "@/core/contracts/infrastructure/cache/ICache";
+import { VarietySpriteEnricherService } from "@/modules/pokegen/application/services/VarietySpriteEnricherService";
+import { ISpriteEnricherService } from "@/modules/pokegen/application/services/contracts/ISpriteEnricherService";
+import { IPokemonSpriteProvider } from "@/modules/pokegen/application/providers/contracts/IPokemonSpriteProvider";
+import { PokemonSpriteProvider } from "@/modules/pokegen/application/providers/PokemonSpriteProvider";
+import { CompositeSpriteEnricherServiceFacade } from "@/modules/pokegen/application/services/facade/CompositeSpriteEnricherServiceFacade";
 
 /**
  * Classe statica per la creazione dei controller della feature pokegen.
@@ -112,12 +116,22 @@ export class PokegenContainer {
         const pokeapiRepository = FactoryHelper
             .create<PokeApiRepository>(PokeApiRepository, pokeApiResponseDataSource, deps.cache, deps.logger);
 
+        // --- PROVIDERS ---
+        const pokemonSpriteProvider = FactoryHelper
+            .create<IPokemonSpriteProvider>(PokemonSpriteProvider, pokemonRepository, deps.logger);
+
         // --- SERVICES ---
         const navigationPokemonLoaderService = FactoryHelper
             .create<INavigationPokemonLoaderService>(NavigationPokemonLoaderService, pokemonRepository, deps.logger);
 
         const evolutionSpriteEnricherService = FactoryHelper
-            .create<IEvolutionSpriteEnricherService>(EvolutionSpriteEnricherService, pokemonRepository, deps.logger);
+            .create<ISpriteEnricherService>(EvolutionSpriteEnricherService, pokemonRepository, deps.logger);
+
+        const varietySpriteEnricherService = FactoryHelper
+            .create<ISpriteEnricherService>(VarietySpriteEnricherService, pokemonSpriteProvider, deps.logger);
+
+        const pokemonSpriteEnricherService = FactoryHelper
+            .create<ISpriteEnricherService>(CompositeSpriteEnricherServiceFacade, [evolutionSpriteEnricherService, varietySpriteEnricherService], deps.logger);
 
         // --- USE CASES ---
         const generationUseCase = FactoryHelper
@@ -127,7 +141,7 @@ export class PokegenContainer {
             .create<IGetPokemonUseCase>(GetPokemonUseCase, generationRepository, deps.logger);
 
         const pokemonDetailUseCase = FactoryHelper
-            .create<IGetPokemonDetailUseCase>(GetPokemonDetailUseCase, pokemonRepository, navigationPokemonLoaderService, evolutionSpriteEnricherService, deps.logger);
+            .create<IGetPokemonDetailUseCase>(GetPokemonDetailUseCase, pokemonRepository, navigationPokemonLoaderService, pokemonSpriteEnricherService, deps.logger);
 
         const pokeapiUseCase = FactoryHelper
             .create<IGetPokeApiUseCase>(GetPokeApiUseCase, pokeapiRepository, deps.logger);

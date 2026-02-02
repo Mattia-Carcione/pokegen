@@ -42,6 +42,14 @@ export class PokemonMapper implements IPokemonMapper {
                 pokemon.sprites.other?.home.front_default ?? pokemon.sprites.front_default ?? ""
             );
 
+            entity.abilities = pokemon.abilities
+                .map(a => ({
+                    slot: a.slot,
+                    name: a.ability.name,
+                    isHidden: a.is_hidden,
+                }))
+                .sort((a, b) => a.slot - b.slot);
+
             this.mapSpecies(entity, species);
 
             this.mapEvolution(entity, evolution);

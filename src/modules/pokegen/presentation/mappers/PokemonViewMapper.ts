@@ -11,6 +11,7 @@ import { PokemonEvolution } from "../../domain/types/PokemonEvolution";
 import { EvolutionStageVM } from "../viewmodels/types/EvolutionStageVM";
 import { buildPokemonVM } from "./utils/evolution/BuildPokemonVM";
 import { buildEvolutionVM } from "./utils/evolution/BuildEvolutionVM";
+import { AbilitySlotMap } from "../enums/AbilitySlotMap";
 
 /**
  * Mapper per convertire i dati del Pokémon in un HomeViewModel.
@@ -56,6 +57,13 @@ export class PokemonViewMapper implements IPokemonViewMapper {
         this.logger.debug("[PokemonViewMapper] - Inizio della mappatura del dettaglio del Pokémon");
         const pokemon = this.map(source);
         try {
+            pokemon.abilities = source.abilities?.map((a) => {
+                return {
+                    slot: a.isHidden ? 'Hidden' : AbilitySlotMap[a.slot] || 'Unknown',
+                    name: StringHelper.capitalize(a.name),
+                    isHidden: a.isHidden,
+                };
+            })
             pokemon.height = MathHelper.formatDecimeterValue(source.height);
             pokemon.weight = MathHelper.formatDecimeterValue(source.weight);
             pokemon.stats = source.stats;
@@ -68,7 +76,14 @@ export class PokemonViewMapper implements IPokemonViewMapper {
             pokemon.generation = { href: { name: PokegenRouteName.Generation, params: { id: generationId ?? 1 } }, name: `${label} ${roman?.toUpperCase()}` };
             pokemon.genderRate = MathHelper.mapGenderRate(source.genderRate || -1);
             pokemon.captureRate = MathHelper.formatPercentageValue(source.captureRate || 0);
-
+            pokemon.varieties = source.varieties?.map(v => ({
+                isDefault: v.is_default,
+                pokemon: {
+                    name: StringHelper.capitalize(v.pokemon.name.replace(/-/g, ' ')),
+                    href: { name: PokegenRouteName.Pokemon, params: { name: v.pokemon.name } },
+                    sprite: v.pokemon.sprite || DEFAULT_POKEMON_IMAGE,
+                }
+            }));
             if (source.evolution)
                 pokemon.evolution = this.mapEvolutionToVM(source.evolution, pokemon);
 

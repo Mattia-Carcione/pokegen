@@ -7,12 +7,15 @@ NB: il progetto è volutamente over ingegnerizzato, poiché usato a scopo didatt
 ## Caratteristiche
 - Navigazione per generazione (`/generation/:id`) con elenco ordinato di Pokémon.
 - Pagina dettaglio Pokémon (`/pokemon/:name`) completa con card dedicata, stats, flavor text, size/capture rate e catena evolutiva.
+- Abilità (normali e nascoste) con slot e tabella dedicata nella pagina dettaglio.
+- Varianti/forme con elenco navigabile e sprite dedicate.
 - Ricerca Pokémon con input dedicato e debounce, basata su indice PokeAPI locale e fetch dei dettagli.
 - Stato centralizzato con Pinia e controller/use-case che orchestrano repository e store.
 - Client HTTP Axios con retry configurabile, exponential backoff con jitter e cache IndexedDB.
 - Mock data locali in `assets/mock_data` utilizzati in modalità development (incl. `pokeapi-list.json`).
 - Dependency Injection tramite `AppContainer` e container feature-specific (PokéGen, Shared) per la gestione delle dipendenze.
 - Sprite ufficiali scaricati come Blob tramite controller dedicato, con lazy loading via Intersection Observer, skeleton e fallback SVG per artwork mancanti.
+- Arricchimento sprite per evoluzioni e varianti tramite servizi dedicati e facade composita.
 - Composable `useIntersectionObserver` per ottimizzare il caricamento delle immagini (lazy load).
 - SEO dinamico con meta tag OG/Twitter, JSON-LD e breadcrumb per rotta.
 - `robots.txt` e `sitemap.xml` generati da script prebuild in `public/`.
@@ -83,6 +86,13 @@ Feature PokéGen organizzata in sotto-layer:
 - `mappers/`: 
   - `GenerationMapper`, `PokemonMapper` (DTO → Domain)
   - `utils/`: Utility per mapper (`Traverse` per traversal ricorsivo catena evolutiva)
+- `providers/`:
+  - `PokemonSpriteProvider` (recupero sprite via repository)
+- `services/`:
+  - `NavigationPokemonLoaderService`
+  - `EvolutionSpriteEnricherService`, `VarietySpriteEnricherService`
+  - `contracts/`: `ISpriteEnricherService`, `INavigationPokemonLoaderService`
+  - `facade/`: `CompositeSpriteEnricherServiceFacade`
 - `usecases/`: Implementazioni use case (`GetGenerationUseCase`, `GetPokemonUseCase`, `GetPokemonDetailUseCase`)
 
 #### Data (`data/`)
@@ -101,7 +111,7 @@ Feature PokéGen organizzata in sotto-layer:
   - `NavbarMapper`, `PokemonViewMapper` (Domain → ViewModel)
   - `utils/evolution/`: Utility builder (`BuildPokemonVM`, `BuildEvolutionVM`)
 - `viewmodels/`: `HomeViewModel`, `DetailViewModel`, `PokemonVM`
-- `components/`: Componenti Vue (`Card`, `BadgeType`, `Skeleton`, `EvolutionChain`)
+- `components/`: Componenti Vue (`Card`, `BadgeType`, `Skeleton`, `EvolutionChain`, `AbilitiesInfo`, `Forms`)
 - `views/`: Viste principali (`HomeView`, `DetailView`)
 - `enums/`: `TypeRequestEnum` per discriminare tipo di richiesta
 - `routes.ts`: Rotte della feature
@@ -230,6 +240,10 @@ src/
     pokegen/
       application/
         mappers/                     # DTO → Domain (+ utils/Traverse)
+        providers/                   # PokemonSpriteProvider
+        services/                    # NavigationPokemonLoaderService, Evolution/Variety sprite enrichers
+          contracts/                 # ISpriteEnricherService, INavigationPokemonLoaderService
+          facade/                    # CompositeSpriteEnricherServiceFacade
         usecases/                    # Business logic
       data/
         datasources/                 # API e mock
@@ -241,10 +255,11 @@ src/
         repositories/                # Interfacce repository
         usecases/                    # Interfacce use case
       presentation/
-        components/                  # Card, BadgeType, Skeleton, EvolutionChain
+        components/                  # Card, BadgeType, Skeleton, EvolutionChain, AbilitiesInfo, Forms
         composables/                 # usePokegenSeo
         config/                      # PokegenAssets
         controllers/                 # Orchestrazione
+        enums/                       # AbilitySlotMap
         mappers/                     # Domain → ViewModel (+ utils/evolution/)
         routing/                     # PokegenRouteName
         store/                       # Pinia stores
@@ -296,6 +311,7 @@ Build Vite + deploy automatico su branch `gh-pages` con `404.html` per SPA routi
 ✅ Clean Architecture con DI modulare  
 ✅ Immagini di fallback SVG per artwork mancanti e sprite caricati via BlobController  
 ✅ **Pagina dettaglio Pokémon** completa (stats, flavor text, size/capture rate, catena evolutiva)
+✅ Abilità (normali/nascoste) e varianti/forme con sprite dedicate
 ✅ SEO per rotta (meta, JSON-LD) + sitemap/robots
 ✅ Pagine legali (privacy/terms) + build metadata nel footer
 
@@ -318,12 +334,15 @@ NB: the project is intentionally over-engineered, as it is used for educational 
 
 * Generation-based navigation (`/generation/:id`) with an ordered list of Pokémon.
 * Pokémon detail page (`/pokemon/:name`) complete with a dedicated card, stats, flavor text, size/capture rate, and evolution chain.
+* Abilities (normal and hidden) with slots and a dedicated table in the detail page.
+* Variants/forms list with dedicated sprites.
 * Pokémon search with dedicated input and debounce, based on a local PokeAPI index and fetching of details.
 * Centralized state with Pinia and controller/use-case layers that orchestrate repositories and store.
 * Axios HTTP client with configurable retry, exponential backoff with jitter, and IndexedDB cache.
 * Local mock data in `assets/mock_data` used in development mode (incl. `pokeapi-list.json`).
 * Dependency Injection via `AppContainer` and feature-specific containers (PokéGen, Shared) for dependency management.
 * Official sprites downloaded as Blobs via a dedicated controller, with lazy loading via Intersection Observer, skeletons, and SVG fallback for missing artwork.
+* Sprite enrichment for evolutions and variants via dedicated services and a composite facade.
 * `useIntersectionObserver` composable to optimize image loading (lazy load).
 * Dynamic SEO with OG/Twitter meta, JSON-LD, and breadcrumbs per route.
 * `robots.txt` and `sitemap.xml` generated by prebuild scripts in `public/`.
@@ -411,6 +430,15 @@ PokéGen feature organized into sub-layers:
 
   * `GenerationMapper`, `PokemonMapper` (DTO → Domain)
   * `utils/`: Mapper utilities (`Traverse` for recursive traversal of evolution chain)
+* `providers/`:
+
+  * `PokemonSpriteProvider` (sprite retrieval via repository)
+* `services/`:
+
+  * `NavigationPokemonLoaderService`
+  * `EvolutionSpriteEnricherService`, `VarietySpriteEnricherService`
+  * `contracts/`: `ISpriteEnricherService`, `INavigationPokemonLoaderService`
+  * `facade/`: `CompositeSpriteEnricherServiceFacade`
 * `usecases/`: Use case implementations (`GetGenerationUseCase`, `GetPokemonUseCase`, `GetPokemonDetailUseCase`)
 
 #### Data (`data/`)
@@ -433,7 +461,7 @@ PokéGen feature organized into sub-layers:
   * `NavbarMapper`, `PokemonViewMapper` (Domain → ViewModel)
   * `utils/evolution/`: Utility builders (`BuildPokemonVM`, `BuildEvolutionVM`)
 * `viewmodels/`: `HomeViewModel`, `DetailViewModel`, `PokemonVM`
-* `components/`: Vue components (`Card`, `BadgeType`, `Skeleton`, `EvolutionChain`)
+* `components/`: Vue components (`Card`, `BadgeType`, `Skeleton`, `EvolutionChain`, `AbilitiesInfo`, `Forms`)
 * `views/`: Main views (`HomeView`, `DetailView`)
 * `enums/`: `TypeRequestEnum` to discriminate request type
 * `routes.ts`: Feature routes
@@ -573,6 +601,10 @@ src/
     pokegen/
       application/
         mappers/                     # DTO → Domain (+ utils/Traverse)
+        providers/                   # PokemonSpriteProvider
+        services/                    # NavigationPokemonLoaderService, Evolution/Variety sprite enrichers
+          contracts/                 # ISpriteEnricherService, INavigationPokemonLoaderService
+          facade/                    # CompositeSpriteEnricherServiceFacade
         usecases/                    # Business logic
       data/
         datasources/                 # API and mock
@@ -584,10 +616,11 @@ src/
         repositories/                # Repository interfaces
         usecases/                    # Use case interfaces
       presentation/
-        components/                  # Card, BadgeType, Skeleton, EvolutionChain
+        components/                  # Card, BadgeType, Skeleton, EvolutionChain, AbilitiesInfo, Forms
         composables/                 # usePokegenSeo
         config/                      # PokegenAssets
         controllers/                 # Orchestration
+        enums/                       # AbilitySlotMap
         mappers/                     # Domain → ViewModel (+ utils/evolution/)
         routing/                     # PokegenRouteName
         store/                       # Pinia stores
@@ -643,6 +676,7 @@ Vite build + automatic deploy to `gh-pages` branch with `404.html` for SPA routi
 ✅ Clean Architecture with modular DI
 ✅ SVG fallback images for missing artwork and sprites loaded via BlobController
 ✅ **Pokémon detail page** complete (stats, flavor text, size/capture rate, evolution chain)
+✅ Abilities (normal/hidden) and variants/forms with dedicated sprites
 ✅ SEO per route (meta, JSON-LD) + sitemap/robots
 ✅ Legal pages (privacy/terms) + build metadata in footer
 

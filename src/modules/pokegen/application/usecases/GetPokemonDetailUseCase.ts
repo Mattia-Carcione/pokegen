@@ -4,7 +4,7 @@ import { IGetPokemonDetailUseCase } from "../../domain/usecases/IGetPokemonDetai
 import { ILogger } from "@/core/contracts/infrastructure/logger/ILogger";
 import { IPokemonRepository } from "../../domain/repositories/IPokemonRepository";
 import { INavigationPokemonLoaderService } from "../services/contracts/INavigationPokemonLoaderService";
-import { IEvolutionSpriteEnricherService } from "../services/contracts/IEvolutionSpriteEnricherService";
+import { ISpriteEnricherService } from "../services/contracts/ISpriteEnricherService";
 
 /**
  * Use case per recuperare i dati di un Pokémon specifico.
@@ -13,7 +13,7 @@ export class GetPokemonDetailUseCase implements IGetPokemonDetailUseCase {
     constructor(
         private readonly pokemonRepository: IPokemonRepository,
         private readonly navigationService: INavigationPokemonLoaderService,
-        private readonly evolutionSpriteEnricherService: IEvolutionSpriteEnricherService,
+        private readonly spriteEnricherService: ISpriteEnricherService,
         private readonly logger: ILogger
     ) { }
 
@@ -26,7 +26,7 @@ export class GetPokemonDetailUseCase implements IGetPokemonDetailUseCase {
         
         try {
             const pokemon = await this.pokemonRepository.getDetailAsync(input);
-            await this.evolutionSpriteEnricherService.enrich(pokemon);
+            await this.spriteEnricherService.enrich(pokemon);
             const navigation = await this.navigationService.load(pokemon);
             const pokemonArray = [pokemon, ...navigation];
             const result = pokemonArray.sort((a, b) => a.id - b.id);

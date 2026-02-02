@@ -11,7 +11,6 @@ const controller = appContainer.blobController();
 const img = ref(null);
 const loaded = ref(false);
 const element = ref(null);
-
 const loadImage = async () => {
     if (img.value || !pokemon.sprite) return;
     try {

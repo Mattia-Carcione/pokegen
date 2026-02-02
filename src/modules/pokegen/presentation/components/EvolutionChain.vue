@@ -25,7 +25,7 @@ const arrayLength = pokemon.evolution.some(
 
                     <!-- Ciclo dei Pokémon base in questo stage -->
                     <template v-if="i === 0">
-                        <RouterLink class="flex flex-col items-center justify-center mt-5" :to="stage.pokemons.href" :aria-label="`Vai al Pokémon ${stage.pokemons.name}`">
+                        <RouterLink class="flex flex-col items-center justify-center mt-5 hover:scale-105 transition-transform" :to="stage.pokemons.href" :aria-label="`Vai al Pokémon ${stage.pokemons.name}`">
                             <Sprite :pokemon="{ name: stage.pokemons.name, sprite: stage.pokemons.sprite }" :className="style" />
                             <p class="capitalize font-semibold text-center mt-1">{{ stage.pokemons.name }}</p>
                             <p v-if="stage.evolutions?.length === 0" class="italic text-center text-gray-500 text-sm mt-1">This Pokémon has no Evolution.</p>
@@ -99,7 +99,7 @@ const arrayLength = pokemon.evolution.some(
                                 </div>
 
                                 <!-- Pokémon evoluto -->
-                                <div class="flex flex-col items-center justify-center">
+                                <div class="flex flex-col items-center justify-center hover:scale-105 transition-transform">
                                     <RouterLink :to="evo.href" :aria-label="`Vai al Pokémon ${evo.to}`">
                                         <Sprite :pokemon="{ name: evo.to, sprite: evo.sprite }" :className="style" />
                                         <p class="capitalize text-sm font-semibold mt-1 text-center">{{ evo.to }}</p>

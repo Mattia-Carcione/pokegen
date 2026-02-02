@@ -59,6 +59,49 @@
   <section id="search" class="sticky top-1 z-[999] text-center relative w-full max-w-xs mx-auto" aria-label="Search">
 
   </section>
+  <article id="seo-intro" style="display: none;" aria-hidden="true">
+    <header>
+      <h1>PokéGen — Esplora i Pokémon per generazione</h1>
+      <p>PokéGen è un’app Vue 3 + Vite che permette di navigare i Pokémon per generazione, cercare per nome e leggere dettagli completi su statistiche, evoluzioni e lore.</p>
+    </header>
+    <section>
+      <h2>Funzionalità principali</h2>
+      <ul>
+        <li>Navigazione per generazione con elenco ordinato di Pokémon.</li>
+        <li>Pagina dettaglio Pokémon con card completa, stats, flavor text, size/capture rate e catena evolutiva.</li>
+        <li>Ricerca con input dedicato e debounce basata su indice PokeAPI locale.</li>
+        <li>Cache IndexedDB + InMemory con retry HTTP e backoff con jitter.</li>
+        <li>Lazy loading immagini con Intersection Observer, skeleton e fallback SVG.</li>
+        <li>SEO per rotta con meta tag OG/Twitter e JSON-LD.</li>
+        <li>Pagine legali: Privacy Policy e Terms of Service.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Rotte principali</h2>
+      <ul>
+        <li><a href="/">Home (redirect a /generation/1)</a></li>
+        <li><a href="/generation/1">Generazione 1</a></li>
+        <li><a href="/generation/2">Generazione 2</a></li>
+        <li><a href="/generation/3">Generazione 3</a></li>
+        <li><a href="/generation/4">Generazione 4</a></li>
+        <li><a href="/generation/5">Generazione 5</a></li>
+        <li><a href="/generation/6">Generazione 6</a></li>
+        <li><a href="/generation/7">Generazione 7</a></li>
+        <li><a href="/generation/8">Generazione 8</a></li>
+        <li><a href="/generation/9">Generazione 9</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/terms">Terms of Service</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2>Stack tecnico</h2>
+      <p>Frontend in Vue 3 con Vite, Vue Router e Pinia. Client HTTP Axios con retry e cache. Styling con Tailwind 4. Testing con Vitest.</p>
+    </section>
+    <section>
+      <h2>Architettura</h2>
+      <p>Clean Architecture con layer core, infrastructure, app, shared e modules (PokéGen). Dependency Injection tramite AppContainer e container di feature.</p>
+    </section>
+  </article>
   <div class="text-center mt-3">
     <h2 id="set-gen"
         class="font-bold text-[2rem] text-[var(--color-primary)] [text-shadow:-1px_-1px_0_#0075BE,1px_-1px_0_#0075BE,-1px_1px_0_#0075BE,1px_1px_0_#0075BE]">

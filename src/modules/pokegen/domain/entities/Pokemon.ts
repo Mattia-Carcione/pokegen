@@ -25,5 +25,6 @@ export class Pokemon {
     public generation?: string;
     public genus?: string;
     public evolution?: PokemonEvolution[];
-    public varieties?: { is_default: boolean; pokemon: { name: string; url: string; }; }[];
+    public varieties?: { is_default: boolean; pokemon: { name: string; url: string; sprite?: string }; }[];
+    public abilities?: { slot: number; name: string; isHidden: boolean; }[];
 }

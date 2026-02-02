@@ -9,12 +9,15 @@ import Sprite from './Sprite.vue';
 import StatsInfo from './StatsInfo.vue';
 import EvolutionChain from './EvolutionChain.vue';
 import BaseInfo from './BaseInfo.vue';
+import Forms from './Forms.vue';
 
 const { pokemon, prev, next, name } = defineProps(['pokemon', 'prev', 'next', 'name']);
 
 const style = 'w-[250px] h-[250px] md:w-[250px] md:h-[250px]';
 const colors = pokemon.types.map(t => t.color);
 const [firstType, secondaryType = firstType] = colors;
+
+console.log(pokemon.varieties)
 </script>
 
 
@@ -50,7 +53,7 @@ const [firstType, secondaryType = firstType] = colors;
                         </figure>
 
                         <!-- Base Info -->
-                        <BaseInfo :pokemon />
+                        <BaseInfo :pokemon="pokemon" />
                     </aside>
 
                     <!-- Detail -->
@@ -63,6 +66,9 @@ const [firstType, secondaryType = firstType] = colors;
 
                         <!-- Evolution Chain -->
                         <EvolutionChain :pokemon="pokemon" />
+
+                        <!-- Variants -->
+                        <Forms v-if="pokemon.varieties?.length > 1" :varieties="pokemon.varieties" />
                     </section>
                 </section>
             </article>

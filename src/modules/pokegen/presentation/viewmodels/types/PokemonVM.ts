@@ -19,4 +19,7 @@ export interface PokemonVM {
     generation?: { href: { name: string; params: { id: number } }, name: string };
     genus?: string;
     evolution?: EvolutionStageVM[];
+    abilities?: { slot: string; name: string; isHidden: boolean; }[];
+    varieties?: { isDefault: boolean; pokemon: { name: string; sprite: string; href: { name: string; params: { name: string } } } }[];
+    eggGroups?: { name: string; href: { name: string; params: { name: string } } }[];
 }

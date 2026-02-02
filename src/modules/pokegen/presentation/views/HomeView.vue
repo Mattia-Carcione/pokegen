@@ -37,7 +37,7 @@
 </script>
 
 <template>
-    <section id="home-view" aria-label="Pokémon list">
+    <section id="home-view" aria-label="Pokémon list" class="my-3">
         <template v-if="pokemonController.isLoading.value">
             <Loader />
         </template>
