@@ -16,11 +16,14 @@
   <link rel="dns-prefetch" href="https://pokeapi.co">
   <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
   <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+  <!-- style rel -->
+  <link rel="stylesheet" href="/src/app/styles/main.css">
+  <link rel="canonical" href="https://mattia-carcione.github.io/pokegen/" />
 
   <meta property="og:title" content="PokéGen Pokédex | Pokémon by Generation, Stats & Evolutions">
   <meta property="og:description" content="PokéGen is a Pokédex to explore Pokémon by generation, with stats, evolutions, types, and lore. Search any Pokémon instantly.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="/">
+  <meta property="og:url" content="https://mattia-carcione.github.io/pokegen/">
   <meta property="og:image" content="/og/default.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -40,12 +43,12 @@
       "@graph": [
         {
           "@type": "WebSite",
-          "@id": "#website",
+          "@id": "https://mattia-carcione.github.io/pokegen/#website",
           "name": "PokéGen",
-          "url": "/",
+          "url": "https://mattia-carcione.github.io/pokegen/",
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "/?search={search_term_string}",
+            "target": "https://mattia-carcione.github.io/pokegen/?search={search_term_string}",
             "query-input": "required name=search_term_string"
           }
         }
@@ -59,47 +62,47 @@
   <section id="search" class="sticky top-1 z-[999] text-center relative w-full max-w-xs mx-auto" aria-label="Search">
 
   </section>
-  <article id="seo-intro" style="display: none;" aria-hidden="true">
+  <article id="seo-intro" class="sr-only">
     <header>
-      <h1>PokéGen — Esplora i Pokémon per generazione</h1>
-      <p>PokéGen è un’app Vue 3 + Vite che permette di navigare i Pokémon per generazione, cercare per nome e leggere dettagli completi su statistiche, evoluzioni e lore.</p>
+      <h1>PokéGen — Browse Pokémon by Generation</h1>
+      <p>PokéGen is a Vue 3 + Vite app that allows browsing Pokémon by generation, searching by name, and reading detailed information on stats, evolutions, and lore.</p>
     </header>
     <section>
-      <h2>Funzionalità principali</h2>
+      <h2>Main Features</h2>
       <ul>
-        <li>Navigazione per generazione con elenco ordinato di Pokémon.</li>
-        <li>Pagina dettaglio Pokémon con card completa, stats, flavor text, size/capture rate e catena evolutiva.</li>
-        <li>Ricerca con input dedicato e debounce basata su indice PokeAPI locale.</li>
-        <li>Cache IndexedDB + InMemory con retry HTTP e backoff con jitter.</li>
-        <li>Lazy loading immagini con Intersection Observer, skeleton e fallback SVG.</li>
-        <li>SEO per rotta con meta tag OG/Twitter e JSON-LD.</li>
-        <li>Pagine legali: Privacy Policy e Terms of Service.</li>
+        <li>Navigation by generation with an ordered list of Pokémon.</li>
+        <li>Pokémon detail page with complete card, stats, flavor text, height/capture rate, and evolution chain.</li>
+        <li>Search with dedicated input and debounce based on local PokeAPI index.</li>
+        <li>IndexedDB + InMemory cache with HTTP retry and jittered backoff.</li>
+        <li>Lazy loading images with Intersection Observer, skeleton, and SVG fallback.</li>
+        <li>SEO for route with OG/Twitter meta tags and JSON-LD.</li>
+        <li>Legal pages: Privacy Policy and Terms of Service.</li>
       </ul>
     </section>
     <section>
-      <h2>Rotte principali</h2>
+      <h2>Main Routes</h2>
       <ul>
-        <li><a href="/">Home (redirect a /generation/1)</a></li>
-        <li><a href="/generation/1">Generazione 1</a></li>
-        <li><a href="/generation/2">Generazione 2</a></li>
-        <li><a href="/generation/3">Generazione 3</a></li>
-        <li><a href="/generation/4">Generazione 4</a></li>
-        <li><a href="/generation/5">Generazione 5</a></li>
-        <li><a href="/generation/6">Generazione 6</a></li>
-        <li><a href="/generation/7">Generazione 7</a></li>
-        <li><a href="/generation/8">Generazione 8</a></li>
-        <li><a href="/generation/9">Generazione 9</a></li>
+        <li><a href="/">Home (redirect to /generation/1)</a></li>
+        <li><a href="/generation/1">Generation 1</a></li>
+        <li><a href="/generation/2">Generation 2</a></li>
+        <li><a href="/generation/3">Generation 3</a></li>
+        <li><a href="/generation/4">Generation 4</a></li>
+        <li><a href="/generation/5">Generation 5</a></li>
+        <li><a href="/generation/6">Generation 6</a></li>
+        <li><a href="/generation/7">Generation 7</a></li>
+        <li><a href="/generation/8">Generation 8</a></li>
+        <li><a href="/generation/9">Generation 9</a></li>
         <li><a href="/privacy">Privacy Policy</a></li>
         <li><a href="/terms">Terms of Service</a></li>
       </ul>
     </section>
     <section>
-      <h2>Stack tecnico</h2>
-      <p>Frontend in Vue 3 con Vite, Vue Router e Pinia. Client HTTP Axios con retry e cache. Styling con Tailwind 4. Testing con Vitest.</p>
+      <h2>Technical Stack</h2>
+      <p>Frontend in Vue 3 with Vite, Vue Router, and Pinia. HTTP Client Axios with retry and cache. Styling with Tailwind 4. Testing with Vitest.</p>
     </section>
     <section>
-      <h2>Architettura</h2>
-      <p>Clean Architecture con layer core, infrastructure, app, shared e modules (PokéGen). Dependency Injection tramite AppContainer e container di feature.</p>
+      <h2>Architecture</h2>
+      <p>Clean Architecture with core, infrastructure, app, shared, and modules (PokéGen) layers. Dependency Injection through AppContainer and feature containers.</p>
     </section>
   </article>
   <div class="text-center mt-3">
