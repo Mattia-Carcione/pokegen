@@ -7,7 +7,7 @@ NB: il progetto è volutamente over ingegnerizzato, poiché usato a scopo didatt
 ## Caratteristiche
 - Navigazione per generazione (`/generation/:id`) con elenco ordinato di Pokémon.
 - Pagina dettaglio Pokémon (`/pokemon/:name`) completa con card dedicata, stats, flavor text, size/capture rate e catena evolutiva.
-- Ricerca Pokémon con input dedicato e debounce, basata su indice PokeAPI locale e fetch dei dettagli (con deduplica risultati).
+- Ricerca Pokémon con input dedicato e debounce, basata su indice PokeAPI locale e fetch dei dettagli.
 - Stato centralizzato con Pinia e controller/use-case che orchestrano repository e store.
 - Client HTTP Axios con retry configurabile, exponential backoff con jitter e cache IndexedDB.
 - Mock data locali in `assets/mock_data` utilizzati in modalità development (incl. `pokeapi-list.json`).
@@ -15,9 +15,10 @@ NB: il progetto è volutamente over ingegnerizzato, poiché usato a scopo didatt
 - Sprite ufficiali scaricati come Blob tramite controller dedicato, con lazy loading via Intersection Observer, skeleton e fallback SVG per artwork mancanti.
 - Composable `useIntersectionObserver` per ottimizzare il caricamento delle immagini (lazy load).
 - SEO dinamico con meta tag OG/Twitter, JSON-LD e breadcrumb per rotta.
-- `robots.txt` e `sitemap.xml` generati in `public/`.
+- `robots.txt` e `sitemap.xml` generati da script prebuild in `public/`.
+- OG image statiche in `public/og/` generate da script prebuild.
 - Pagine legali (`/privacy`, `/terms`) e footer con disclaimer.
-- Build metadata automatico (versione e last updated) aggiornato ad ogni build.
+- Build metadata (versione e last updated) aggiornato da script prebuild.
 
 ## Stack tecnico
 - **Frontend**: Vue 3, Vite, Vue Router, Pinia
@@ -86,8 +87,8 @@ Feature PokéGen organizzata in sotto-layer:
 
 #### Data (`data/`)
 - `datasources/`: 
-  - `GenerationDataSource`, `PokemonDataSource`, `PokemonSpeciesDataSource`, `PokeApiResponseDataSource` (HTTP)
-  - Versioni mock per ogni datasource
+  - `GenerationDataSource`, `PokemonDataSource`, `PokemonSpeciesDataSource`, `EvolutionChainDataSource` (HTTP)
+  - Versioni mock per `Generation`, `Pokemon` e `PokemonSpecies`
 - `models/`: DTO e tipi aggregati (`GenerationDTO`, `PokemonDTO`, `PokemonSpeciesDTO`, `PokemonAggregateData`)
 - `repositories/`: Implementazioni repository con facade per datasource e mapper
 - `types/`: Tipi specifici del data layer
@@ -113,13 +114,13 @@ Componenti e logica riutilizzabili (usati trasversalmente da più feature):
 - `presentation/`:
   - `components/`: Componenti Vue riutilizzati (`404View`, `Loader`, `CustomSection`, `ScrollToTop`, `AppMetaInfo`, `PrivacyView`, `TermsView`)
   - `composables/`: Vue composables (`useIntersectionObserver`, `useSeo` per meta tag e JSON-LD)
-  - `controllers/`: `UseBlobController` (indice e ricerca PokeAPI spostati nella feature PokéGen)
+  - `controllers/`: `UseBlobController`, `UsePokeApiController`
 - `factories/`: `SharedContainer` per dependency injection (Blob + PokeAPI + cache)
 
 ## Rotte
 - `/` – Home (redirect a `/generation/1`)
 - `/generation/:id` – Lista Pokémon di una generazione specifica
-- `/pokemon/:name` – Dettaglio Pokémon (UI in sviluppo, dati già esposti dal controller)
+- `/pokemon/:name` – Dettaglio Pokémon
 - `/privacy` – Privacy Policy
 - `/terms` – Terms of Service
 - `/:pathMatch(.*)*` – Pagina 404 personalizzata
@@ -180,7 +181,8 @@ await pkmController.loadData({ endpoint: 'pikachu', req: TypeRequestEnum.DETAIL 
 ## SEO e Metadata
 - Meta tag dinamici per route (OG/Twitter) con `applyRouteSeo`.
 - JSON-LD con `createStructuredData` e `createPokemonStructuredData`.
-- `public/robots.txt` e `public/sitemap.xml` per indicizzazione.
+- `public/robots.txt` e `public/sitemap.xml` per indicizzazione (generati via `scripts/updateSitemap.js`).
+- OG images in `public/og/` generate via `scripts/updateOgImages.js`.
 - Build metadata (`APP_VERSION`, `LAST_UPDATED`) in `src/config/buildMeta.ts` aggiornati da `scripts/updateBuildMetadata.js`.
 
 ## Struttura progetto completa
@@ -189,11 +191,12 @@ eslint.config.js                  # ESLint + boundaries
 src/
   app/
     di/
-      AppContainer.ts                # DI container principale (nota: DEV invertito)
+      AppContainer.ts                # DI container principale
       pokegen/
         PokegenContainer.ts          # DI container pokegen
     presentation/
       layout/                        # Hero, Navbar, Footer
+      seo/                            # seoManager
     routing/
       AppRouteName.ts                # Enum rotte (Home = '/')
       routes.ts                      # Configurazione router
@@ -229,7 +232,7 @@ src/
         mappers/                     # DTO → Domain (+ utils/Traverse)
         usecases/                    # Business logic
       data/
-        datasources/                 # API, mock e aggregati
+        datasources/                 # API e mock
         models/                      # DTO e tipi
         repositories/                # Implementazioni repository
         types/                       # Tipi specifici data layer
@@ -260,7 +263,7 @@ src/
     presentation/
       components/                    # Loader, 404View, CustomSection, ScrollToTop, AppMetaInfo, PrivacyView, TermsView
       composables/                   # useIntersectionObserver, useSeo
-      controllers/                   # UseBlobController
+      controllers/                   # UseBlobController, UsePokeApiController
       viewmodels/                    # ViewModel condivisi
     factories/                       # SharedContainer
 assets/
@@ -315,7 +318,7 @@ NB: the project is intentionally over-engineered, as it is used for educational 
 
 * Generation-based navigation (`/generation/:id`) with an ordered list of Pokémon.
 * Pokémon detail page (`/pokemon/:name`) complete with a dedicated card, stats, flavor text, size/capture rate, and evolution chain.
-* Pokémon search with dedicated input and debounce, based on a local PokeAPI index and fetching of details (deduped results).
+* Pokémon search with dedicated input and debounce, based on a local PokeAPI index and fetching of details.
 * Centralized state with Pinia and controller/use-case layers that orchestrate repositories and store.
 * Axios HTTP client with configurable retry, exponential backoff with jitter, and IndexedDB cache.
 * Local mock data in `assets/mock_data` used in development mode (incl. `pokeapi-list.json`).
@@ -323,9 +326,10 @@ NB: the project is intentionally over-engineered, as it is used for educational 
 * Official sprites downloaded as Blobs via a dedicated controller, with lazy loading via Intersection Observer, skeletons, and SVG fallback for missing artwork.
 * `useIntersectionObserver` composable to optimize image loading (lazy load).
 * Dynamic SEO with OG/Twitter meta, JSON-LD, and breadcrumbs per route.
-* `robots.txt` and `sitemap.xml` in `public/`.
+* `robots.txt` and `sitemap.xml` generated by prebuild scripts in `public/`.
+* Static OG images in `public/og/` generated by prebuild scripts.
 * Legal pages (`/privacy`, `/terms`) and footer disclaimer.
-* Build metadata (version and last updated) updated on every build.
+* Build metadata (version and last updated) updated by prebuild scripts.
 
 ## Tech stack
 
@@ -413,8 +417,8 @@ PokéGen feature organized into sub-layers:
 
 * `datasources/`:
 
-  * `GenerationDataSource`, `PokemonDataSource`, `PokemonSpeciesDataSource`, `PokeApiResponseDataSource` (HTTP)
-  * Mock versions for each datasource
+  * `GenerationDataSource`, `PokemonDataSource`, `PokemonSpeciesDataSource`, `EvolutionChainDataSource` (HTTP)
+  * Mock versions for `Generation`, `Pokemon`, and `PokemonSpecies`
 * `models/`: DTOs and aggregated types (`GenerationDTO`, `PokemonDTO`, `PokemonSpeciesDTO`, `PokemonAggregateData`)
 * `repositories/`: Repository implementations with datasource and mapper facades
 * `types/`: Data-layer specific types
@@ -445,14 +449,14 @@ Reusable components and logic (used across multiple features):
 
   * `components/`: Reusable Vue components (`404View`, `Loader`, `CustomSection`, `ScrollToTop`, `AppMetaInfo`, `PrivacyView`, `TermsView`)
   * `composables/`: Vue composables (`useIntersectionObserver`, `useSeo` for meta tags and JSON-LD)
-  * `controllers/`: `UseBlobController` (PokeAPI index and search live in PokéGen)
+  * `controllers/`: `UseBlobController`, `UsePokeApiController`
 * `factories/`: `SharedContainer` for dependency injection (Blob + PokeAPI + cache)
 
 ## Routes
 
-* `/` – Home (generation list, redirect from /generation/1)
+* `/` – Home (redirect to `/generation/1`)
 * `/generation/:id` – Pokémon list of a specific generation
-* `/pokemon/:name` – Pokémon detail (UI under development, data already exposed by the controller)
+* `/pokemon/:name` – Pokémon detail
 * `/privacy` – Privacy Policy
 * `/terms` – Terms of Service
 * `/:pathMatch(.*)*` – Custom 404 page
@@ -519,7 +523,8 @@ await pkmController.loadData({ endpoint: 'pikachu', req: TypeRequestEnum.DETAIL 
 ## SEO and Metadata
 * Dynamic meta tags per route (OG/Twitter) via `applyRouteSeo`.
 * JSON-LD with `createStructuredData` and `createPokemonStructuredData`.
-* `public/robots.txt` and `public/sitemap.xml` for indexing.
+* `public/robots.txt` and `public/sitemap.xml` for indexing (generated via `scripts/updateSitemap.js`).
+* OG images in `public/og/` generated via `scripts/updateOgImages.js`.
 * Build metadata (`APP_VERSION`, `LAST_UPDATED`) in `src/config/buildMeta.ts` updated by `scripts/updateBuildMetadata.js`.
 
 ## Full project structure
@@ -529,11 +534,12 @@ eslint.config.js                  # ESLint + boundaries
 src/
   app/
     di/
-      AppContainer.ts                # Main DI container (note: DEV inverted)
+      AppContainer.ts                # Main DI container
       pokegen/
         PokegenContainer.ts          # Pokegen DI container
     presentation/
       layout/                        # Hero, Navbar, Footer
+      seo/                            # seoManager
     routing/
       AppRouteName.ts                # Route enum (Home = '/')
       routes.ts                      # Router configuration
@@ -569,7 +575,7 @@ src/
         mappers/                     # DTO → Domain (+ utils/Traverse)
         usecases/                    # Business logic
       data/
-        datasources/                 # API, mock, and aggregates
+        datasources/                 # API and mock
         models/                      # DTOs and types
         repositories/                # Repository implementations
         types/                       # Data-layer specific types
@@ -600,7 +606,7 @@ src/
     presentation/
       components/                    # Loader, 404View, CustomSection, ScrollToTop, AppMetaInfo, PrivacyView, TermsView
       composables/                   # useIntersectionObserver, useSeo
-      controllers/                   # UseBlobController
+      controllers/                   # UseBlobController, UsePokeApiController
       viewmodels/                    # Shared ViewModels
     factories/                       # SharedContainer
 assets/
