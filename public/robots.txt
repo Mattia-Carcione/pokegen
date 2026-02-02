@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-
+Allow: /googlefac4c26c4b003786.html
 Sitemap: https://mattia-carcione.github.io/pokegen/sitemap.xml
