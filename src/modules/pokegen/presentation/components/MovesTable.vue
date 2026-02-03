@@ -21,24 +21,24 @@ defineProps({
             <table class="w-full lg:w-1/2 mx-auto text-sm table-auto">
                 <thead class="text-left text-[var(--text-primary)]">
                     <tr>
-                        <th class="p-2">Move</th>
-                        <th class="p-2">Type</th>
-                        <th class="p-2">Category</th>
-                        <th class="p-2">Power</th>
-                        <th class="p-2">Accuracy</th>
-                        <th class="p-2">PP</th>
-                        <th class="p-2">{{ extraLabel }}</th>
+                        <th>Move</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Power</th>
+                        <th>Accuracy</th>
+                        <th>PP</th>
+                        <th>{{ extraLabel }}</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr v-for="move in rows" :key="move.slug" class="border-t border-[var(--bg-custom)]">
-                        <td class="p-2 font-medium">{{ move.name }}</td>
+                        <td class="font-medium p-1">{{ move.name }}</td>
 
-                        <td class="font-medium text-center">
+                        <td class="font-medium p-1">
                             <template v-if="move.detail">
                                 <span
-                                    class="inline-flex items-center gap-2 px-2 py-1 text-xs font-bold text-[var(--text-primary)]/80 w-full bg-[var(--bg-custom)]/75 rounded-full capitalize" >
+                                    class="w-full flex items-center justify-center  gap-1 px-5 py-1 text-xs font-bold text-[var(--text-primary)]/80 bg-[var(--bg-custom)]/75 rounded-full capitalize" >
                                     <img v-if="buildTypeBadge(move.detail.type).icon"
                                         :src="buildTypeBadge(move.detail.type).icon" class="h-4 w-4 bg-white rounded-full"
                                         :alt="buildTypeBadge(move.detail.type).label" />
@@ -48,7 +48,7 @@ defineProps({
                             <span v-else>-</span>
                         </td>
 
-                        <td class="p-2 font-medium">
+                        <td class="font-medium p-1">
                             <span class="inline-block px-2 py-1 text-xs font-semibold text-white w-full text-center capitalize" :class="{
                                 'bg-[#6D5ACF]': move.detail?.damageClass === 'special',
                                 'bg-[#F95587]': move.detail?.damageClass === 'physical',
@@ -57,10 +57,10 @@ defineProps({
                                 {{ move.detail?.damageClass ? move.detail.damageClass : '-' }}
                             </span>
                         </td>
-                        <td class="p-2 font-medium">{{ move.detail?.power ?? '-' }}</td>
-                        <td class="p-2 font-medium">{{ move.detail?.accuracy ?? '-' }}</td>
-                        <td class="p-2 font-medium">{{ move.detail?.pp ?? '-' }}</td>
-                        <td class="p-2 font-medium">{{ extraValue(move) }}</td>
+                        <td class="font-medium p-1">{{ move.detail?.power ?? '-' }}</td>
+                        <td class="font-medium p-1">{{ move.detail?.accuracy ?? '-' }}</td>
+                        <td class="font-medium p-1">{{ move.detail?.pp ?? '-' }}</td>
+                        <td class="font-medium p-1">{{ extraValue(move) }}</td>
                     </tr>
                 </tbody>
             </table>
