@@ -38,7 +38,7 @@ const defenseGroups = computed(() => {
             <template v-for="group in defenseGroups" :key="`def-${group.key}`">
                 <section v-if="group && renderList(group.list)">
                 <h4 :class="`font-bold text-sm ${group.className}`">{{ group.title }}</h4>
-                <ul class="flex flex-wrap gap-1 mt-2">
+                <ul class="flex flex-wrap items-center justify-center gap-1 mt-2">
                     <li v-for="t in group.list" :key="`def-${group.key}-${t.name}`"
                     class="flex items-center gap-1 bg-white/70 rounded-full px-2 py-1">
                     <img class="w-7 h-7 rounded-full" :src="t.icon" :alt="t.label" loading="lazy" />
