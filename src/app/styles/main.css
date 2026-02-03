@@ -76,11 +76,13 @@ main {
     transform: scaleX(1);
 }
 
-#terms p, #privacy p {
+#terms p, #privacy p,
+#terms ul,
+#privacy ul {
     line-height: 1.6;
     text-align: justify;
     text-justify: inter-word;
-    color: var(--color-secondary);
-    font-size: 1rem;
+    color: var(--color-text);
+    font-size: 1.125rem;
     font-weight: 700;
 }

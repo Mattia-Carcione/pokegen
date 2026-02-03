@@ -36,6 +36,10 @@
     --stat-special-defense: #22c55e;
     --stat-speed: #a855f7;
 
+    /* === TYPOGRAPHY COLORS === */
+    --color-text: #333333;
+    --color-text-secondary: #555555;
+
     /* === CONTRAST COLORS === */
     --color-contrast-light: #FFFFFF;
 

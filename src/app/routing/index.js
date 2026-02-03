@@ -20,4 +20,5 @@ router.afterEach((to) => {
   applyRouteSeo(to);
 });
 
+
 export default router
