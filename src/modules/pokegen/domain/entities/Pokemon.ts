@@ -1,4 +1,5 @@
 import { PokemonEvolution } from "../types/PokemonEvolution";
+import { PokemonMove } from "../types/PokemonMove";
 
 /**
  * Rappresenta un Pokémon nel dominio dell'applicazione.
@@ -27,4 +28,5 @@ export class Pokemon {
     public evolution?: PokemonEvolution[];
     public varieties?: { is_default: boolean; pokemon: { name: string; url: string; sprite?: string }; }[];
     public abilities?: { slot: number; name: string; isHidden: boolean; }[];
+    public moves?: PokemonMove[];
 }

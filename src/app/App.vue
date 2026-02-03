@@ -7,11 +7,13 @@ import LegalNoticeBanner from '@/shared/presentation/components/LegalNoticeBanne
 
 const pokeApiController = appContainer.pokeApiController();
 const pokemonTypesController = appContainer.pokemonTypesController();
+const versionGroupsController = appContainer.versionGroupsController();
 
 onMounted(async () => {
   await Promise.all([
     pokeApiController.loadData(),
     pokemonTypesController.loadData(),
+    versionGroupsController.loadData(),
   ]);
 });
 

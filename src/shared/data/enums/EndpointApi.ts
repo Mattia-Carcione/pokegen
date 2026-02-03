@@ -9,4 +9,8 @@ export enum EndpointApi {
     EvolutionChain = 'evolution-chain/',
     TypeList = 'type?limit=1000000',
     Type = 'type/',
+    VersionGroupList = 'version-group?limit=1000000',
+    VersionGroup = 'version-group/',
+    Move = 'move/',
+    Machine = 'machine/',
 }

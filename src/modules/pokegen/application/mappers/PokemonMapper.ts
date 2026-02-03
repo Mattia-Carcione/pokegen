@@ -51,6 +51,16 @@ export class PokemonMapper implements IPokemonMapper {
                 }))
                 .sort((a, b) => a.slot - b.slot);
 
+            entity.moves = (pokemon.moves ?? []).map((move) => ({
+                slug: move.move.name,
+                name: move.move.name,
+                details: (move.version_group_details ?? []).map((detail) => ({
+                    level: detail.level_learned_at,
+                    method: detail.move_learn_method.name,
+                    versionGroup: detail.version_group.name,
+                }))
+            }));
+
             this.mapSpecies(entity, species);
 
             this.mapEvolution(entity, evolution);

@@ -1,0 +1,8 @@
+[
+  {
+    "id": 1,
+    "item": { "name": "tm01", "url": "https://pokeapi.co/api/v2/item/305/" },
+    "move": { "name": "tackle", "url": "https://pokeapi.co/api/v2/move/33/" },
+    "version_group": { "name": "red-blue", "url": "https://pokeapi.co/api/v2/version-group/1/" }
+  }
+]

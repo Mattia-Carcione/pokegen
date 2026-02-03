@@ -181,6 +181,11 @@ export class UsePokemonController extends IUsePokemonController {
         );
     }
 
+    /** 
+     * Mappa l'efficacia dei tipi per un dato Pokémon.
+     * @param pokemon Il Pokémon di cui calcolare l'efficacia dei tipi.
+     * @returns Una Promise che risolve il ViewModel dell'efficacia dei tipi o null in caso di errore.
+     */
     private async mapTypeEffectiveness(pokemon: Pokemon): Promise<TypeEffectivenessVM | null> {
         try {
             const types = pokemon.types.map((t) => t.name);

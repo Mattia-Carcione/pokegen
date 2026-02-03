@@ -13,6 +13,7 @@ import EvolutionChain from './EvolutionChain.vue';
 import BaseInfo from './BaseInfo.vue';
 import Forms from './Forms.vue';
 import TypeEffectiveness from './TypeEffectiveness.vue';
+import MovesInfo from './MovesInfo.vue';
 
 const props = defineProps(['pokemon', 'prev', 'next', 'name', 'typeEffectiveness']);
 
@@ -77,9 +78,12 @@ const secondaryType = computed(() => colors.value[1] ?? firstType.value);
 
                         <!-- Type Effectiveness -->
                         <TypeEffectiveness v-if="typeEffectiveness" :effectiveness="typeEffectiveness" />
-
+                        
                         <!-- Variants -->
                         <Forms v-if="pokemon.varieties?.length > 1" :varieties="pokemon.varieties" />
+                            
+                        <!-- Moves -->
+                        <MovesInfo v-if="pokemon.moves?.length" :moves="pokemon.moves" />
                     </section>
                 </section>
             </article>

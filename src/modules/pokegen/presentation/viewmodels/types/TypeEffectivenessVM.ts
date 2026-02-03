@@ -1,3 +1,6 @@
+/**
+ * Rappresenta un moltiplicatore di tipo per l'efficacia dei tipi.
+ */
 export interface TypeMultiplierVM {
   name: string;
   label: string;
@@ -7,6 +10,9 @@ export interface TypeMultiplierVM {
   icon: string;
 }
 
+/**
+ * Rappresenta l'efficacia dei tipi.
+ */
 export interface TypeEffectivenessVM {
   defense: {
     weak: TypeMultiplierVM[];

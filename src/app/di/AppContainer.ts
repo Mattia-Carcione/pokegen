@@ -11,6 +11,8 @@ import { IUsePokeApiController } from "@/modules/pokegen/presentation/controller
 import { IUseGenerationController } from "@/modules/pokegen/presentation/controllers/contracts/IUseGenerationController";
 import { IUsePokemonController } from "@/modules/pokegen/presentation/controllers/contracts/IUsePokemonController";
 import { IUsePokemonTypesController } from "@/modules/pokegen/presentation/controllers/contracts/IUsePokemonTypesController";
+import { IUseVersionGroupsController } from "@/modules/pokegen/presentation/controllers/contracts/IUseVersionGroupsController";
+import { IUseMoveDetailsController } from "@/modules/pokegen/presentation/controllers/contracts/IUseMoveDetailsController";
 
 /**
  * Container per la gestione delle dipendenze dell'applicazione PokéGen.
@@ -21,6 +23,8 @@ class AppContainer {
   readonly blobController: () => IUseControllerBase;
   readonly pokeApiController: () => IUsePokeApiController;
   readonly pokemonTypesController: () => IUsePokemonTypesController;
+  readonly versionGroupsController: () => IUseVersionGroupsController;
+  readonly moveDetailsController: () => IUseMoveDetailsController;
 
   constructor(env: EnvironmentEnum) {
     // --- LOGGERS ---
@@ -40,7 +44,7 @@ class AppContainer {
 
       // --- CONTAINERS ---
       const { blobController, cache } = SharedContainer.build(env, { httpClient, httpMapper, logger });
-      const { generationController, pokemonController, pokeApiController, pokemonTypesController } = PokegenContainer.build(env, { httpClient, httpMapper, cache, logger });
+      const { generationController, pokemonController, pokeApiController, pokemonTypesController, versionGroupsController, moveDetailsController } = PokegenContainer.build(env, { httpClient, httpMapper, cache, logger });
 
       // --- ASSIGNMENTS ---
       this.generationController = generationController;
@@ -48,6 +52,8 @@ class AppContainer {
       this.blobController = blobController;
       this.pokeApiController = pokeApiController;
       this.pokemonTypesController = pokemonTypesController;
+      this.versionGroupsController = versionGroupsController;
+      this.moveDetailsController = moveDetailsController;
 
       logger.info("[AppContainer] - App avviata con successo.")
     } catch (error) {
@@ -61,7 +67,7 @@ class AppContainer {
  * Istanza del container dell'applicazione PokéGen.
  */
 export const appContainer = new AppContainer(
-  import.meta.env.DEV
+  !import.meta.env.DEV
     ? EnvironmentEnum.DEVELOPMENT
     : EnvironmentEnum.PRODUCTION
 );

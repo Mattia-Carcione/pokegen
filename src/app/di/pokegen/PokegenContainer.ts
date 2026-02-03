@@ -34,14 +34,22 @@ import { PokemonRepository } from "@/modules/pokegen/data/repositories/PokemonRe
 import { TypeRepository } from "@/modules/pokegen/data/repositories/TypeRepository";
 import { TypePokemonRepository } from "@/modules/pokegen/data/repositories/TypePokemonRepository";
 import { TypeDetailRepository } from "@/modules/pokegen/data/repositories/TypeDetailRepository";
+import { VersionGroupRepository } from "@/modules/pokegen/data/repositories/VersionGroupRepository";
+import { VersionGroupDetailRepository } from "@/modules/pokegen/data/repositories/VersionGroupDetailRepository";
+import { MoveRepository } from "@/modules/pokegen/data/repositories/MoveRepository";
+import { MachineRepository } from "@/modules/pokegen/data/repositories/MachineRepository";
 import { GetGenerationUseCase } from "@/modules/pokegen/application/usecases/GetGenerationUseCase";
 import { GetPokemonUseCase } from "@/modules/pokegen/application/usecases/GetPokemonUseCase";
 import { GetPokemonDetailUseCase } from "@/modules/pokegen/application/usecases/GetPokemonDetailUseCase";
 import { GetPokemonTypesDetailUseCase } from "@/modules/pokegen/application/usecases/GetPokemonTypesDetailUseCase";
 import { GetPokemonByTypeUseCase } from "@/modules/pokegen/application/usecases/GetPokemonByTypeUseCase";
+import { GetVersionGroupsDetailUseCase } from "@/modules/pokegen/application/usecases/GetVersionGroupsDetailUseCase";
+import { GetMoveDetailsUseCase } from "@/modules/pokegen/application/usecases/GetMoveDetailsUseCase";
 import { UseGenerationController } from "@/modules/pokegen/presentation/controllers/UseGenerationController";
 import { UsePokemonController } from "@/modules/pokegen/presentation/controllers/UsePokemonController";
 import { UsePokemonTypesController } from "@/modules/pokegen/presentation/controllers/UsePokemonTypesController";
+import { UseVersionGroupsController } from "@/modules/pokegen/presentation/controllers/UseVersionGroupsController";
+import { UseMoveDetailsController } from "@/modules/pokegen/presentation/controllers/UseMoveDetailsController";
 import { PokemonSpeciesMockDataSource } from "@/modules/pokegen/data/datasources/mock/PokemonSpeciesMockDataSource";
 import { EvolutionChainDto } from "@/modules/pokegen/data/models/dtos/EvolutionChainDto";
 import { EvolutionChainDataSource } from "@/modules/pokegen/data/datasources/EvolutionChainDataSource";
@@ -67,17 +75,38 @@ import { IPokemonSpriteProvider } from "@/modules/pokegen/application/providers/
 import { PokemonSpriteProvider } from "@/modules/pokegen/application/providers/PokemonSpriteProvider";
 import { CompositeSpriteEnricherServiceFacade } from "@/modules/pokegen/application/services/facade/CompositeSpriteEnricherServiceFacade";
 import { usePokemonTypesStore } from "@/modules/pokegen/presentation/store/UsePokemonTypesStore";
+import { useVersionGroupsStore } from "@/modules/pokegen/presentation/store/UseVersionGroupsStore";
+import { useMoveDetailsStore } from "@/modules/pokegen/presentation/store/UseMoveDetailsStore";
 import { ITypeRepository } from "@/modules/pokegen/domain/repositories/ITypeRepository";
 import { ITypeDetailRepository } from "@/modules/pokegen/domain/repositories/ITypeDetailRepository";
 import { IGetPokemonTypesDetailUseCase } from "@/modules/pokegen/domain/usecases/IGetPokemonTypesDetailUseCase";
 import { ITypePokemonRepository } from "@/modules/pokegen/domain/repositories/ITypePokemonRepository";
 import { IGetPokemonByTypeUseCase } from "@/modules/pokegen/domain/usecases/IGetPokemonByTypeUseCase";
+import { IVersionGroupRepository } from "@/modules/pokegen/domain/repositories/IVersionGroupRepository";
+import { IVersionGroupDetailRepository } from "@/modules/pokegen/domain/repositories/IVersionGroupDetailRepository";
+import { IGetVersionGroupsDetailUseCase } from "@/modules/pokegen/domain/usecases/IGetVersionGroupsDetailUseCase";
+import { IMoveRepository } from "@/modules/pokegen/domain/repositories/IMoveRepository";
+import { IMachineRepository } from "@/modules/pokegen/domain/repositories/IMachineRepository";
+import { IGetMoveDetailsUseCase } from "@/modules/pokegen/domain/usecases/IGetMoveDetailsUseCase";
 import { ITypeEffectivenessService } from "@/modules/pokegen/application/services/contracts/ITypeEffectivenessService";
 import { TypeEffectivenessService } from "@/modules/pokegen/application/services/TypeEffectivenessService";
 import { ITypeEffectivenessCalculator } from "@/modules/pokegen/application/services/contracts/ITypeEffectivenessCalculator";
 import { TypeEffectivenessCalculator } from "@/modules/pokegen/application/services/TypeEffectivenessCalculator";
+import type { IMoveDetailsEnricherService } from "@/modules/pokegen/application/services/contracts/IMoveDetailsEnricherService";
+import { MoveDetailsEnricherService } from "@/modules/pokegen/application/services/MoveDetailsEnricherService";
 import { ITypeEffectivenessViewMapper } from "@/modules/pokegen/presentation/mappers/contracts/ITypeEffectivenessViewMapper";
 import { TypeEffectivenessViewMapper } from "@/modules/pokegen/presentation/mappers/TypeEffectivenessViewMapper";
+import { VersionGroupDataSource } from "@/modules/pokegen/data/datasources/VersionGroupDataSource";
+import { VersionGroupMockDataSource } from "@/modules/pokegen/data/datasources/mock/VersionGroupMockDataSource";
+import { VersionGroupDto } from "@/modules/pokegen/data/models/dtos/VersionGroupDto";
+import { IUseVersionGroupsController } from "@/modules/pokegen/presentation/controllers/contracts/IUseVersionGroupsController";
+import { MoveDataSource } from "@/modules/pokegen/data/datasources/MoveDataSource";
+import { MachineDataSource } from "@/modules/pokegen/data/datasources/MachineDataSource";
+import { MoveMockDataSource } from "@/modules/pokegen/data/datasources/mock/MoveMockDataSource";
+import { MachineMockDataSource } from "@/modules/pokegen/data/datasources/mock/MachineMockDataSource";
+import { MoveDto } from "@/modules/pokegen/data/models/dtos/MoveDto";
+import { MachineDto } from "@/modules/pokegen/data/models/dtos/MachineDto";
+import { IUseMoveDetailsController } from "@/modules/pokegen/presentation/controllers/contracts/IUseMoveDetailsController";
 
 /**
  * Classe statica per la creazione dei controller della feature pokegen.
@@ -103,6 +132,8 @@ export class PokegenContainer {
         pokemonController: () => IUsePokemonController;
         pokeApiController: () => IUsePokeApiController;
         pokemonTypesController: () => IUsePokemonTypesController;
+        versionGroupsController: () => IUseVersionGroupsController;
+        moveDetailsController: () => IUseMoveDetailsController;
     } {
         // --- MAPPERS ---
         const generationMapper = FactoryHelper.create<GenerationMapper>(GenerationMapper, deps.logger);
@@ -139,6 +170,18 @@ export class PokegenContainer {
         const typeDataSource = FactoryHelper
             .createByEnvHelper<IDataSource<TypeDto>>(env, TypeDataSource, TypeMockDataSource, ...dataSourceFactoryInput);
 
+        const versionGroupResponseDataSource = FactoryHelper
+            .createByEnvHelper<IDataSource<PokeApiResponseDto>>(env, PokeApiResponseDataSource, PokeApiResponseDataSource, ...dataSourceFactoryInput);
+
+        const versionGroupDataSource = FactoryHelper
+            .createByEnvHelper<IDataSource<VersionGroupDto>>(env, VersionGroupDataSource, VersionGroupMockDataSource, ...dataSourceFactoryInput);
+
+        const moveDataSource = FactoryHelper
+            .createByEnvHelper<IDataSource<MoveDto>>(env, MoveDataSource, MoveMockDataSource, ...dataSourceFactoryInput);
+
+        const machineDataSource = FactoryHelper
+            .createByEnvHelper<IDataSource<MachineDto>>(env, MachineDataSource, MachineMockDataSource, ...dataSourceFactoryInput);
+
         // --- REPOSITORIES ---
         const generationRepository = FactoryHelper
             .create<IGenerationRepository>(GenerationRepository, generationDataSource, pokeApiResponseDataSource, pokemonDataSource, generationMapper, pokemonMapper, deps.cache, deps.logger);
@@ -157,6 +200,18 @@ export class PokegenContainer {
 
         const typePokemonRepository = FactoryHelper
             .create<ITypePokemonRepository>(TypePokemonRepository, typeDataSource, pokemonRepository, deps.cache, deps.logger);
+
+        const versionGroupRepository = FactoryHelper
+            .create<IVersionGroupRepository>(VersionGroupRepository, versionGroupResponseDataSource, deps.cache, deps.logger);
+
+        const versionGroupDetailRepository = FactoryHelper
+            .create<IVersionGroupDetailRepository>(VersionGroupDetailRepository, versionGroupRepository, versionGroupDataSource, deps.cache, deps.logger);
+
+        const moveRepository = FactoryHelper
+            .create<IMoveRepository>(MoveRepository, moveDataSource, deps.cache, deps.logger);
+
+        const machineRepository = FactoryHelper
+            .create<IMachineRepository>(MachineRepository, machineDataSource, deps.cache, deps.logger);
 
         // --- PROVIDERS ---
         const pokemonSpriteProvider = FactoryHelper
@@ -181,6 +236,9 @@ export class PokegenContainer {
         const typeEffectivenessService = FactoryHelper
             .create<ITypeEffectivenessService>(TypeEffectivenessService, typeDetailRepository, typeEffectivenessCalculator, deps.logger);
 
+        const moveDetailsEnricherService = FactoryHelper
+            .create<IMoveDetailsEnricherService>(MoveDetailsEnricherService, machineRepository, deps.logger);
+
         // --- USE CASES ---
         const generationUseCase = FactoryHelper
             .create<IGetGenerationUseCase>(GetGenerationUseCase, generationRepository, deps.logger);
@@ -203,6 +261,12 @@ export class PokegenContainer {
         const pokemonByTypeUseCase = FactoryHelper
             .create<IGetPokemonByTypeUseCase>(GetPokemonByTypeUseCase, typePokemonRepository, deps.logger);
 
+        const versionGroupsDetailUseCase = FactoryHelper
+            .create<IGetVersionGroupsDetailUseCase>(GetVersionGroupsDetailUseCase, versionGroupDetailRepository, deps.logger);
+
+        const moveDetailsUseCase = FactoryHelper
+            .create<IGetMoveDetailsUseCase>(GetMoveDetailsUseCase, moveRepository, moveDetailsEnricherService, deps.logger);
+
         // --- CONTROLLERS ---
         const genController = () => FactoryHelper
             .create<UseGenerationController>(UseGenerationController, useGenerationStore(), generationUseCase, navbarMapper, deps.logger);
@@ -215,12 +279,20 @@ export class PokegenContainer {
 
         const pokemonTypesController = () => FactoryHelper
             .create<UsePokemonTypesController>(UsePokemonTypesController, usePokemonTypesStore(), pokemonTypesDetailUseCase, deps.logger);
+
+        const versionGroupsController = () => FactoryHelper
+            .create<UseVersionGroupsController>(UseVersionGroupsController, useVersionGroupsStore(), versionGroupsDetailUseCase, deps.logger);
+
+        const moveDetailsController = () => FactoryHelper
+            .create<UseMoveDetailsController>(UseMoveDetailsController, useMoveDetailsStore(), moveDetailsUseCase, deps.logger);
         
             return {
             generationController: genController,
             pokemonController: pkmController,
             pokeApiController: pkApiController,
             pokemonTypesController: pokemonTypesController,
+            versionGroupsController: versionGroupsController,
+            moveDetailsController: moveDetailsController,
         }
     }
 }

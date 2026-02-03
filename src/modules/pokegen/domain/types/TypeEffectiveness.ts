@@ -1,8 +1,14 @@
+/**
+ * Rappresenta un moltiplicatore di tipo per l'efficacia dei tipi.
+ */
 export interface TypeMultiplier {
   name: string;
   multiplier: number;
 }
 
+/**
+ * Rappresenta l'efficacia dei tipi.
+ */
 export interface TypeEffectiveness {
   defense: {
     weak: TypeMultiplier[];
