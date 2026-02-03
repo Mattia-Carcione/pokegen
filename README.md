@@ -7,13 +7,16 @@ NB: il progetto è volutamente over ingegnerizzato, poiché usato a scopo didatt
 ## Caratteristiche
 - Navigazione per generazione (`/generation/:id`) con elenco ordinato di Pokémon.
 - Pagina dettaglio Pokémon (`/pokemon/:name`) completa con card dedicata, stats, flavor text, size/capture rate e catena evolutiva.
+- Tabella mosse per generazione con dettagli (tipo, categoria, potenza, precisione, PP) e numero MT/TM, con fallback e sorting.
 - Abilità (normali e nascoste) con slot e tabella dedicata nella pagina dettaglio.
 - Varianti/forme con elenco navigabile e sprite dedicate.
 - Ricerca Pokémon con input dedicato e debounce, basata su indice PokeAPI locale e fetch dei dettagli.
 - Prefetch iniziale della lista tipi (`/type`) all'avvio, con caching in memoria.
+- Caricamento dei version-group per derivare la generazione delle mosse e normalizzare i metodi di apprendimento.
 - Stato centralizzato con Pinia e controller/use-case che orchestrano repository e store.
 - Client HTTP Axios con retry configurabile, exponential backoff con jitter e cache IndexedDB.
 - Mock data locali in `assets/mock_data` utilizzati in modalità development (incl. `pokeapi-list.json`).
+- Mock dettagli per version-group, moves e machines in `assets/mock_data/` per test offline.
 - Mock dettagliato dei tipi in `assets/mock_data/types-detail.json` e lista Pokémon ridotta in `assets/mock_data/pokemon-list.json` per la ricerca per tipo in dev.
 - Dependency Injection tramite `AppContainer` e container feature-specific (PokéGen, Shared) per la gestione delle dipendenze.
 - Sprite ufficiali scaricati come Blob tramite controller dedicato, con lazy loading via Intersection Observer, skeleton e fallback SVG per artwork mancanti.
@@ -81,9 +84,9 @@ Configurazioni applicative indipendenti dai layer core:
 Feature PokéGen organizzata in sotto-layer:
 
 #### Domain (`domain/`)
-- `entities/`: `Generation`, `Pokemon` (entità di business con metodi helper)
-- `repositories/`: Interfacce repository (`IGenerationRepository`, `IPokemonRepository`)
-- `usecases/`: Interfacce use case (`IGetGenerationUseCase`, `IGetPokemonUseCase`, `IGetPokemonDetailUseCase`)
+- `entities/`: `Generation`, `Pokemon`, `VersionGroupInfo`, `MoveDetail`, `MachineInfo`
+- `repositories/`: Interfacce repository (`IGenerationRepository`, `IPokemonRepository`, `IVersionGroupRepository`, `IVersionGroupDetailRepository`, `IMoveRepository`, `IMachineRepository`)
+- `usecases/`: Interfacce use case (`IGetGenerationUseCase`, `IGetPokemonUseCase`, `IGetPokemonDetailUseCase`, `IGetVersionGroupsDetailUseCase`, `IGetMoveDetailsUseCase`)
 
 #### Application (`application/`)
 - `mappers/`: 
@@ -94,14 +97,17 @@ Feature PokéGen organizzata in sotto-layer:
 - `services/`:
   - `NavigationPokemonLoaderService`
   - `EvolutionSpriteEnricherService`, `VarietySpriteEnricherService`
-  - `contracts/`: `ISpriteEnricherService`, `INavigationPokemonLoaderService`
+  - `MoveDetailsEnricherService`
+  - `contracts/`: `ISpriteEnricherService`, `INavigationPokemonLoaderService`, `IMoveDetailsEnricherService`
   - `facade/`: `CompositeSpriteEnricherServiceFacade`
 - `usecases/`: Implementazioni use case (`GetGenerationUseCase`, `GetPokemonUseCase`, `GetPokemonDetailUseCase`)
+  - `GetVersionGroupsDetailUseCase`, `GetMoveDetailsUseCase`
 
 #### Data (`data/`)
 - `datasources/`: 
   - `GenerationDataSource`, `PokemonDataSource`, `PokemonSpeciesDataSource`, `EvolutionChainDataSource` (HTTP)
-  - Versioni mock per `Generation`, `Pokemon` e `PokemonSpecies`
+  - `VersionGroupDataSource`, `MoveDataSource`, `MachineDataSource` (HTTP)
+  - Versioni mock per `Generation`, `Pokemon`, `PokemonSpecies`, `VersionGroup`, `Move`, `Machine`
 - `models/`: DTO e tipi aggregati (`GenerationDTO`, `PokemonDTO`, `PokemonSpeciesDTO`, `PokemonAggregateData`)
 - `repositories/`: Implementazioni repository con facade per datasource e mapper
 - `types/`: Tipi specifici del data layer
@@ -109,13 +115,15 @@ Feature PokéGen organizzata in sotto-layer:
 
 #### Presentation (`presentation/`)
 - `controllers/`: `UseGenerationController`, `UsePokemonController` (orchestrano use case e store)
-- `store/`: Store Pinia (`UseGenerationStore`, `UsePokegenStore`)
+- `controllers/`: `UseGenerationController`, `UsePokemonController`, `UseVersionGroupsController`, `UseMoveDetailsController`
+- `store/`: Store Pinia (`UseGenerationStore`, `UsePokegenStore`, `UseVersionGroupsStore`, `UseMoveDetailsStore`)
 - `mappers/`: 
   - `NavbarMapper`, `PokemonViewMapper` (Domain → ViewModel)
   - `utils/evolution/`: Utility builder (`BuildPokemonVM`, `BuildEvolutionVM`)
 - `viewmodels/`: `HomeViewModel`, `DetailViewModel`, `PokemonVM`
-- `components/`: Componenti Vue (`Card`, `BadgeType`, `Skeleton`, `EvolutionChain`, `AbilitiesInfo`, `Forms`)
+- `components/`: Componenti Vue (`Card`, `BadgeType`, `Skeleton`, `EvolutionChain`, `AbilitiesInfo`, `Forms`, `MovesInfo`)
 - `views/`: Viste principali (`HomeView`, `DetailView`)
+- `composables/`: `useMovesInfo` per logica tabella mosse
 - `enums/`: `TypeRequestEnum` per discriminare tipo di richiesta
 - `routes.ts`: Rotte della feature
 
@@ -169,9 +177,9 @@ Il `AppContainer` + `PokegenContainer` + `SharedContainer` inizializzano tutte l
 2. **Mappers**: `GenerationMapper`, `PokemonMapper`, `NavbarMapper`, `PokemonViewMapper`
 3. **PokéGen DataSources**: Selezione API/mock via `FactoryHelper.createByEnvHelper`
 4. **PokéGen Repositories**: `GenerationRepository`, `PokemonRepository` con facade per datasource e mapper
-5. **PokéGen Services**: `NavigationPokemonLoaderService`, `EvolutionSpriteEnricherService`
-6. **PokéGen Use Cases**: `GetGenerationUseCase`, `GetPokemonUseCase`, `GetPokemonDetailUseCase`, `GetSearchPokemonUseCase`
-7. **PokéGen Controllers**: `UseGenerationController`, `UsePokemonController`
+5. **PokéGen Services**: `NavigationPokemonLoaderService`, `EvolutionSpriteEnricherService`, `MoveDetailsEnricherService`
+6. **PokéGen Use Cases**: `GetGenerationUseCase`, `GetPokemonUseCase`, `GetPokemonDetailUseCase`, `GetSearchPokemonUseCase`, `GetVersionGroupsDetailUseCase`, `GetMoveDetailsUseCase`
+7. **PokéGen Controllers**: `UseGenerationController`, `UsePokemonController`, `UseVersionGroupsController`, `UseMoveDetailsController`
 8. **Shared pipeline**: `BlobRepository` → `GetBlobUseCase` → `UseBlobController`
 9. **PokéGen PokeAPI pipeline**: `PokeApiRepository` → `GetPokeApiUseCase` → `UsePokeApiController`
 

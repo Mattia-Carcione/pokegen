@@ -1,5 +1,5 @@
 const SITE_NAME = 'PokéGen';
-const DEFAULT_DESCRIPTION = 'Explore Pokémon by generation, search by name, and view detailed stats, evolutions, and lore with PokéGen.';
+const DEFAULT_DESCRIPTION = 'Explore Pokémon by generation, search by types or names, compare moves (power, accuracy, PP, TM/MT), and view detailed stats, evolutions, and lore with PokéGen.';
 const DEFAULT_IMAGE = '/poke-icon.svg';
 const DEFAULT_TYPE = 'website';
 const DEFAULT_LOCALE = 'en_US';

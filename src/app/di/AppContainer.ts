@@ -67,7 +67,7 @@ class AppContainer {
  * Istanza del container dell'applicazione PokéGen.
  */
 export const appContainer = new AppContainer(
-  !import.meta.env.DEV
+  import.meta.env.DEV
     ? EnvironmentEnum.DEVELOPMENT
     : EnvironmentEnum.PRODUCTION
 );

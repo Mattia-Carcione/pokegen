@@ -16,7 +16,7 @@ export const pokegenRoutes =[
         meta: {
             seo: {
                 title: 'Generation {id}',
-                description: 'Browse all Pokémon from Generation {id} with stats, types, and evolutions.',
+                description: 'Browse all Pokémon from Generation {id} with stats, types, evolutions, and learnable moves.',
                 pageType: 'CollectionPage',
                 breadcrumb: [
                     { name: 'Home', url: '/' },
@@ -33,7 +33,7 @@ export const pokegenRoutes =[
         meta: {
             seo: {
                 title: '{name}',
-                description: 'Discover stats, types, evolutions, and lore for {name}.',
+                description: 'Discover stats, types, evolutions, and move details (power, accuracy, PP, TM/MT) for {name}.',
                 pageType: 'ItemPage',
                 breadcrumb: [
                     { name: 'Home', url: '/' },
