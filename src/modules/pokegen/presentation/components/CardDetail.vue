@@ -16,8 +16,6 @@ const { pokemon, prev, next, name } = defineProps(['pokemon', 'prev', 'next', 'n
 const style = 'w-[250px] h-[250px] md:w-[250px] md:h-[250px]';
 const colors = pokemon.types.map(t => t.color);
 const [firstType, secondaryType = firstType] = colors;
-
-console.log(pokemon.varieties)
 </script>
 
 

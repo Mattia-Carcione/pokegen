@@ -79,7 +79,7 @@ export class PokemonViewMapper implements IPokemonViewMapper {
             pokemon.varieties = source.varieties?.map(v => ({
                 isDefault: v.is_default,
                 pokemon: {
-                    name: StringHelper.capitalize(v.pokemon.name.replace(/-/g, ' ')),
+                    name: StringHelper.capitalize(StringHelper.replace(v.pokemon.name, '-',' ')),
                     href: { name: PokegenRouteName.Pokemon, params: { name: v.pokemon.name } },
                     sprite: v.pokemon.sprite || DEFAULT_POKEMON_IMAGE,
                 }
@@ -88,6 +88,7 @@ export class PokemonViewMapper implements IPokemonViewMapper {
                 pokemon.evolution = this.mapEvolutionToVM(source.evolution, pokemon);
 
             // TODO: Aggiungere ulteriori dettagli specifici per la vista dettaglio
+            this.logger.debug("[PokemonViewMapper] - Mappatura del dettaglio del PokémonVM completata con successo.", pokemon);
             return pokemon;
         } catch (error) {
             this.logger.error("[PokemonViewMapper] - Error during mapping detail of Pokémon: " + (error as Error).message);

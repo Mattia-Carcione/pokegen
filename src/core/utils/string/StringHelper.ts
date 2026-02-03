@@ -36,4 +36,16 @@ export class StringHelper {
         
         return input.split(/-/g);
     }
+
+    /**
+     * Sostituisce tutte le occorrenze di una sottostringa in una stringa con un'altra sottostringa.
+     * @param input La stringa di input.
+     * @param searchValue La sottostringa da cercare.
+     * @param replaceValue La sottostringa da sostituire.
+     * @returns La stringa risultante con le sostituzioni effettuate.
+     */
+    static replace(input: string, searchValue: string, replaceValue: string): string {
+        if(!input) return input;
+        return input.replace(new RegExp(searchValue, 'g'), replaceValue);
+    }
 }

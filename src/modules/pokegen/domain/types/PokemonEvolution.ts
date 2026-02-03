@@ -7,7 +7,9 @@ export interface PokemonEvolution {
     spriteFrom?: string;
     spriteTo?: string;
     trigger: string;             // tipo di evoluzione ("level-up", "use-item", ecc.)
+    minSteps?: number;           // passi minimi per evolvere (se presente)
     minLevel?: number;           // livello minimo per evolvere (se presente)
+    heldItem?: string;          // oggetto richiesto (se presente)
     item?: string;               // oggetto richiesto (se presente)
     gender?: number | null;      // genere richiesto (se presente)
     timeOfDay?: string;          // momento della giornata (se presente)

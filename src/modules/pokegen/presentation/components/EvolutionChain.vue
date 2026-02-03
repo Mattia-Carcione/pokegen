@@ -43,50 +43,31 @@ const arrayLength = pokemon.evolution.some(
 
                                     <!-- info evoluzione (solo se presenti) -->
                                     <div class="text-xs capitalize space-y-1 text-center" translate="no">
+                                        <!-- info -->
+                                        <p v-for="(info, i) in evo.info" :key="i"
+                                            class="text-sm font-semibold whitespace-pre-line">
+                                            {{ info }}
+                                        </p>
 
                                         <!-- item -->
-                                        <template v-if="evo.item">
-                                            <Sprite :pokemon="{ name: evo.item, sprite: evo.itemSprite }" 
+                                        <template v-if="evo.item && evo.trigger">
+                                            <Sprite :pokemon="{ name: evo.item, sprite: evo.itemSprite }"
                                                 className="w-5 h-5 mx-auto" />
-                                            <p class="text-sm font-semibold">{{ evo.item }}</p>
+                                            <p class="text-sm font-semibold">
+                                                {{ evo.trigger }} <br>
+                                                {{ evo.item.replace(/-/g, ' ') }}
+                                            </p>
                                         </template>
 
-                                        <!-- genere -->
-                                        <p class="text-sm font-semibold" v-if="evo.gender">({{ evo.gender }})</p>
-
-                                        <!-- livello -->
-                                        <p class="text-sm font-semibold" v-if="evo.minLevel">
-                                            Level {{ evo.minLevel }}
-                                        </p>
-
-                                        <!-- felicità -->
-                                        <p class="text-sm font-semibold" v-if="evo.minHappiness">Happiness</p>
-
-                                        <!-- momento del giorno -->
-                                        <p class="text-sm font-semibold" v-if="evo.timeOfDay">({{ evo.timeOfDay }})</p>
-
-                                        <!-- mossa conosciuta -->
-                                        <p class="text-sm font-semibold" v-if="evo.knownMove">
-                                            Knowing move: <br>
-                                            {{ evo.knownMove }}
-                                        </p>
-
-                                        <!-- tipo mossa conosciuta -->
-                                        <p class="text-sm font-semibold" v-if="evo.knownMoveType">
-                                            Knowing move type: <br>
-                                            {{ evo.knownMoveType }}
-                                        </p>
-
-                                        <!-- luogo -->
-                                        <p class="text-sm font-semibold" v-if="evo.location">
-                                            Level up at: <br>
-                                            {{ evo.location }}
-                                        </p>
-
-                                        <!-- stats fisiche -->
-                                        <p class="text-sm font-semibold" v-if="evo.relativePhysicalStats !== undefined">
-                                            Physical stats {{ evo.relativePhysicalStats > 0 ? '>' : '<' }}
-                                        </p>
+                                        <!-- held item -->
+                                        <template v-if="evo.heldItem">
+                                            <p class="text-sm font-semibold">
+                                                with {{ evo.heldItem.replace(/-/g, ' ') }}
+                                            </p>
+                                            <Sprite
+                                                :pokemon="{ name: evo.heldItem, sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${evo.heldItem.toLowerCase()}.png` }"
+                                                className="w-5 h-5 mx-auto" />
+                                        </template>
                                     </div>
 
                                     <!-- freccia (SEMPRE PRESENTE) -->

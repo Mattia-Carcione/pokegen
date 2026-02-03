@@ -8,6 +8,7 @@ import { PokemonSpeciesDto } from "../../data/models/dtos/PokemonSpeciesDto";
 import { EvolutionChainDto } from "../../data/models/dtos/EvolutionChainDto";
 import { PokemonEvolution } from "../../domain/types/PokemonEvolution";
 import { traverse } from "./utils/Traverse";
+import { StringHelper } from "@/core/utils/string/StringHelper";
 
 /**
  * Mapper per convertire i dati del Pokémon dal Dto al dominio.
@@ -56,6 +57,7 @@ export class PokemonMapper implements IPokemonMapper {
 
             if (forms) { }
 
+            this.logger.debug("[PokemonMapper] - Mappatura completata con successo. ", entity);
             return entity;
         } catch (error) {
             throw new MappingError<PokemonAggregateData>("[PokemonMapper] - Error during Pokémon mapping", Dto, error as Error);
@@ -79,7 +81,7 @@ export class PokemonMapper implements IPokemonMapper {
         pokemon.flavorText = dto.flavor_text_entries
             .filter((entry) => entry.language.name === "en")
             .map((entry) => ({
-                version: entry.version.name,
+                version: StringHelper.replace(entry.version.name, '-',' '),
                 text: entry.flavor_text.replace(/[\n\f]/g, " ")
             }));
         pokemon.captureRate = dto.capture_rate;
