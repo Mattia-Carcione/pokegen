@@ -35,7 +35,7 @@ defineProps({
                     <tr v-for="move in rows" :key="move.slug" class="border-t border-[var(--bg-custom)]">
                         <td class="p-2 font-medium">{{ move.name }}</td>
 
-                        <td class="p-2 font-medium text-center">
+                        <td class="font-medium text-center">
                             <template v-if="move.detail">
                                 <span
                                     class="inline-flex items-center gap-2 px-2 py-1 text-xs font-bold text-[var(--text-primary)]/80 w-full bg-[var(--bg-custom)]/75 rounded-full capitalize" >
