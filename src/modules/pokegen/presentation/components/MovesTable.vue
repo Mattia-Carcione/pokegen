@@ -21,13 +21,13 @@ defineProps({
             <table class="w-full lg:w-1/2 mx-auto text-sm table-auto">
                 <thead class="text-left text-[var(--text-primary)]">
                     <tr>
-                        <th>Move</th>
-                        <th>Type</th>
-                        <th>Category</th>
-                        <th>Power</th>
-                        <th>Accuracy</th>
-                        <th>PP</th>
-                        <th>{{ extraLabel }}</th>
+                        <th class="py-1 px-2">Move</th>
+                        <th class="py-1 px-2">Type</th>
+                        <th class="py-1 px-2">Category</th>
+                        <th class="py-1 px-2">Power</th>
+                        <th class="py-1 px-2">Accuracy</th>
+                        <th class="py-1 px-2">PP</th>
+                        <th class="py-1 px-2">{{ extraLabel }}</th>
                     </tr>
                 </thead>
 
