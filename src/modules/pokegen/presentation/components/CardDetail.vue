@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+
 import CardDetailNavigation from './CardDetailNavigation.vue';
 import BadgeName from './BadgeName.vue';
 import BagdeType from './BadgeType.vue';
@@ -13,10 +14,16 @@ import BaseInfo from './BaseInfo.vue';
 import Forms from './Forms.vue';
 import TypeEffectiveness from './TypeEffectiveness.vue';
 
-const { pokemon, prev, next, name, typeEffectiveness } = defineProps(['pokemon', 'prev', 'next', 'name', 'typeEffectiveness']);
+const props = defineProps(['pokemon', 'prev', 'next', 'name', 'typeEffectiveness']);
+
+const pokemon = computed(() => props.pokemon);
+const prev = computed(() => props.prev);
+const next = computed(() => props.next);
+const name = computed(() => props.name);
+const typeEffectiveness = computed(() => props.typeEffectiveness);
 
 const style = 'w-[250px] h-[250px] md:w-[250px] md:h-[250px]';
-const colors = computed(() => pokemon.types.map(t => t.color));
+const colors = computed(() => pokemon.value?.types?.map(t => t.color) ?? []);
 const firstType = computed(() => colors.value[0]);
 const secondaryType = computed(() => colors.value[1] ?? firstType.value);
 </script>

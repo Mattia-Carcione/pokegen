@@ -1,14 +1,18 @@
 <script setup>
-import { ref } from "vue";
-import Sprite from "./Sprite.vue";
+import { computed } from "vue";
 import { RouterLink } from "vue-router";
 
-const { pokemon } = defineProps(['pokemon']);
+import Sprite from "./Sprite.vue";
+
+const props = defineProps(['pokemon']);
+const pokemon = computed(() => props.pokemon);
 const style = 'w-25 h-25 lg:w-[150px] lg:h-[150px]';
-const arrayLength = pokemon.evolution.some(
-    stage =>
-        (stage.evolutions?.length ?? 0) > 2 ||
-        (stage.pokemons?.length ?? 0) > 2
+const arrayLength = computed(() =>
+    pokemon.value?.evolution?.some(
+        stage =>
+            (stage.evolutions?.length ?? 0) > 2 ||
+            (stage.pokemons?.length ?? 0) > 2
+    ) ?? false
 );
 </script>
 <template>

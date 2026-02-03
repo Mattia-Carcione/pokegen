@@ -1,7 +1,10 @@
 <script setup>
+import { computed } from 'vue';
+
 import Skeleton from './Skeleton.vue';
 
-const {types} = defineProps(['types']);
+const props = defineProps(['types']);
+const types = computed(() => props.types ?? []);
 </script>
 
 <template>

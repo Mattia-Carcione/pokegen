@@ -1,11 +1,14 @@
 <script setup>
-const { stats } = defineProps(['stats']);
+import { computed } from 'vue';
+
+const props = defineProps(['stats']);
+const stats = computed(() => props.stats ?? []);
 const statColorVar = (name) => {
     return `--stat-${name.toLowerCase().replace(' ', '-')}`;
 };
 
 const maxStatValue = 255; // Valore massimo per le statistiche dei Pokémon
-const totalBaseStats = stats.reduce((total, stat) => total + stat.base, 0);
+const totalBaseStats = computed(() => stats.value.reduce((total, stat) => total + stat.base, 0));
 </script>
 
 <template>

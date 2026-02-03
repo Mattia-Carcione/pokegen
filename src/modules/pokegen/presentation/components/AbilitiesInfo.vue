@@ -1,8 +1,11 @@
 <script setup>
-const { abilities } = defineProps(['abilities']);
+import { computed } from 'vue';
 
-const hiddenAbilities = abilities.filter((ability) => ability.isHidden);
-const regularAbilities = abilities.filter((ability) => !ability.isHidden);
+const props = defineProps(['abilities']);
+const abilities = computed(() => props.abilities ?? []);
+
+const hiddenAbilities = computed(() => abilities.value.filter((ability) => ability.isHidden));
+const regularAbilities = computed(() => abilities.value.filter((ability) => !ability.isHidden));
 </script>
 
 <template>

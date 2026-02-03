@@ -1,5 +1,10 @@
 <script setup>
-const { height, weight, captureRate } = defineProps(['height', 'weight', 'captureRate']);
+import { computed } from 'vue';
+
+const props = defineProps(['height', 'weight', 'captureRate']);
+const height = computed(() => props.height);
+const weight = computed(() => props.weight);
+const captureRate = computed(() => props.captureRate);
 </script>
 
 <template>

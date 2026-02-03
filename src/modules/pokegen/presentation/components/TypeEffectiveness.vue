@@ -6,7 +6,6 @@ const props = defineProps({
     type: Object,
     default: () => ({
       defense: { weak: [], resist: [], immune: [], normal: [] },
-      offense: { strong: [], weak: [], noEffect: [], normal: [] },
     })
   }
 });
@@ -21,17 +20,6 @@ const defenseGroups = computed(() => {
     { key: 'resist', title: 'Resistant to', className: 'text-emerald-600', list: effectiveness.defense?.resist, valueClass: 'text-emerald-600' },
     { key: 'immune', title: 'Immune to', className: 'text-slate-600', list: effectiveness.defense?.immune, valueClass: 'text-slate-600' },
     { key: 'normal', title: 'Normal', className: 'text-gray-500', list: effectiveness.defense?.normal, valueClass: 'text-gray-500' },
-  ];
-});
-
-const offenseGroups = computed(() => {
-  const effectiveness = props.effectiveness;
-  if (!effectiveness) return [];
-  return [
-    { key: 'strong', title: 'Super effective', className: 'text-emerald-600', list: effectiveness.offense?.strong, valueClass: 'text-emerald-600' },
-    { key: 'weak', title: 'Not very effective', className: 'text-amber-600', list: effectiveness.offense?.weak, valueClass: 'text-amber-600' },
-    { key: 'noEffect', title: 'No effect', className: 'text-slate-600', list: effectiveness.offense?.noEffect, valueClass: 'text-slate-600' },
-    { key: 'normal', title: 'Normal', className: 'text-gray-500', list: effectiveness.offense?.normal, valueClass: 'text-gray-500' },
   ];
 });
 </script>

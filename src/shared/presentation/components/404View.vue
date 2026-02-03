@@ -1,10 +1,11 @@
 <script setup>
+    import { computed } from 'vue';
     import { useRoute, RouterLink } from 'vue-router';
     import { AppRouteName } from '@/app/routing/AppRouteName';
 
-    const error = defineProps(['error']);
+    const props = defineProps(['error']);
     const route = useRoute();
-    const message = error.error ?? 'Unknown error.';
+    const message = computed(() => props.error?.error ?? 'Unknown error.');
 </script>
 
 <template>

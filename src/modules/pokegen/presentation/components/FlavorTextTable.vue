@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
-const { flavorText } = defineProps(['flavorText']);
+const props = defineProps(['flavorText']);
+const flavorText = computed(() => props.flavorText ?? []);
 const expanded = ref(false);
 
 const toggle = () => {

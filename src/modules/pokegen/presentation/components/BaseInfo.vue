@@ -1,9 +1,12 @@
 <script setup>
+import { computed } from 'vue';
+
 import AbilitiesInfo from './AbilitiesInfo.vue';
 import GenderRate from './GenderRate.vue';
 import PokemonSize from './PokemonSize.vue';
 
-const { pokemon } = defineProps(['pokemon']);
+const props = defineProps(['pokemon']);
+const pokemon = computed(() => props.pokemon);
 </script>
  
 <template>

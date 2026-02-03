@@ -1,4 +1,5 @@
 import { computed, ComputedRef, shallowRef, watch } from "vue";
+
 import { PokegenStore } from "../store/types/StoreTypes";
 import { IGetPokemonUseCase } from "../../domain/usecases/IGetPokemonUseCase";
 import { IGetPokemonDetailUseCase } from "../../domain/usecases/IGetPokemonDetailUseCase";
@@ -15,6 +16,7 @@ import { IGetPokemonByTypeUseCase } from "../../domain/usecases/IGetPokemonByTyp
 import { ITypeEffectivenessService } from "@/modules/pokegen/application/services/contracts/ITypeEffectivenessService";
 import { TypeEffectivenessVM } from "@/modules/pokegen/presentation/viewmodels/types/TypeEffectivenessVM";
 import { ITypeEffectivenessViewMapper } from "@/modules/pokegen/presentation/mappers/contracts/ITypeEffectivenessViewMapper";
+import { TYPE_COLORS } from "@/modules/pokegen/presentation/config/PokegenAssets";
 
 /**
  * Implementazione del controller della generazione dei Pokémon.
@@ -124,18 +126,15 @@ export class UsePokemonController extends IUsePokemonController {
 
         const typeList = this.pokemonTypesStore.list;
         const isTypeSearch = !!typeList?.some((t) => t.name.toLowerCase() === value);
+        const isTypeCandidate = isTypeSearch || Object.prototype.hasOwnProperty.call(TYPE_COLORS, value);
 
-        if (isTypeSearch) {
+        if (isTypeCandidate) {
             const result = await this.pokemonByTypeUseCase.execute(value);
-            if (!result.success || !result.data || result.data.length === 0) {
+            if (result.success && result.data && result.data.length > 0) {
+                this.store.pokemon = result.data;
                 this.store.loading = false;
-                this.store.error = result.error ?? new Error(`No Pokémon found for the given type: ${value}.`);
                 return;
             }
-
-            this.store.pokemon = result.data;
-            this.store.loading = false;
-            return;
         }
 
         await this.pokeApiStore.search(value, this.pokeSearchUseCase);

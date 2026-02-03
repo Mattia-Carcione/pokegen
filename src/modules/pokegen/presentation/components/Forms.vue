@@ -1,8 +1,11 @@
 <script setup>
+import { computed } from 'vue';
 import { RouterLink } from "vue-router";
+
 import Sprite from "./Sprite.vue";
 
-const  { varieties } = defineProps(['varieties']);
+const props = defineProps(['varieties']);
+const varieties = computed(() => props.varieties ?? []);
 const style = 'w-25 h-25 lg:w-[150px] lg:h-[150px]';
 </script>
 

@@ -1,12 +1,16 @@
 <script setup>
+import { computed } from 'vue';
+
 import BadgeName from './BadgeName.vue';
 import BadgeType from './BadgeType.vue';
 import Sprite from './Sprite.vue';
 
-const { card } = defineProps(['card']);
+const props = defineProps(['card']);
+const card = computed(() => props.card);
 const style = 'w-[250px] h-[250px] md:w-[250px] md:h-[250px]';
-const colors = card.types.map(t => t.color);
-const [firstType, secondaryType = firstType] = colors;
+const colors = computed(() => card.value?.types?.map(t => t.color) ?? []);
+const firstType = computed(() => colors.value[0]);
+const secondaryType = computed(() => colors.value[1] ?? firstType.value);
 </script>
 
 <template>

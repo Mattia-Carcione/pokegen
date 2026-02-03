@@ -1,32 +1,39 @@
-import PokeApiResponseMockData from "@/../assets/mock_data/resource-list.json";
+import GenerationListMockData from "@/../assets/mock_data/resource-list.json";
+import PokemonListMockData from "@/../assets/mock_data/pokeapi-list.json";
 import { IDataSource } from "@/core/contracts/data/IDataSource";
 import { ExternalServiceUnavailableError } from "@/core/errors/ExternalServiceUnavailableError";
 import { PokeApiResponseDto } from "@/shared/data/models/dtos/PokeApiResponseDto";
+import { EndpointApi } from "@/shared/data/enums/EndpointApi";
 
 /**
  * Mock Data source per ottenere la lista delle generazioni Pokémon da file JSON locali.
  * Utile per testing e sviluppo senza dipendere dall'API esterna.
  */
 export class PokeApiResponseMockDataSource implements IDataSource<PokeApiResponseDto> {
-    private mockData: PokeApiResponseDto;
+    private generationMockData: PokeApiResponseDto;
+    private pokemonMockData: PokeApiResponseDto;
 
     constructor() {
-        this.mockData = PokeApiResponseMockData as PokeApiResponseDto;
+        this.generationMockData = GenerationListMockData as PokeApiResponseDto;
+        this.pokemonMockData = PokemonListMockData as PokeApiResponseDto;
     }
 
     /**
      * Metodo non applicabile per questo data source.
      * @throws Error sempre, poiché non implementato.
      */
-    async fetchData(): Promise<any> {
+    async fetchData(endpoint: string = EndpointApi.EntryPoint): Promise<PokeApiResponseDto> {
         try {
             // Simula un piccolo delay per replicare il comportamento di una chiamata HTTP
             await new Promise(resolve => setTimeout(resolve, 1500));
+            const isGenerationEndpoint = endpoint.includes(EndpointApi.Generation) || endpoint.includes("generation");
+            const data = isGenerationEndpoint ? this.generationMockData : this.pokemonMockData;
+
             // Verifica che i dati mock siano validi
-            if (!this.mockData || !this.mockData.results) {
+            if (!data || !data.results) {
                 throw new Error("Dati mock dell'entry point non validi o mancanti");
             }
-            return this.mockData;
+            return data;
         } catch (error) {
             throw new ExternalServiceUnavailableError("Errore nel recupero dei dati dell'entry point dal mock." + " \n Dettagli: " + (error as Error).message);
         }
@@ -37,7 +44,11 @@ export class PokeApiResponseMockDataSource implements IDataSource<PokeApiRespons
      * Metodo helper per aggiornare i dati mock durante i test.
      * @param newData - I nuovi dati mock da utilizzare
      */
-    setMockData(newData: PokeApiResponseDto): void {
-        this.mockData = newData;
+    setMockData(newData: PokeApiResponseDto, kind: "pokemon" | "generation" = "pokemon"): void {
+        if (kind === "generation") {
+            this.generationMockData = newData;
+            return;
+        }
+        this.pokemonMockData = newData;
     }
 }

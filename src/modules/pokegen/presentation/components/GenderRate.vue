@@ -1,5 +1,8 @@
 <script setup>
-const { genderRate } = defineProps(['genderRate']);
+import { computed } from 'vue';
+
+const props = defineProps(['genderRate']);
+const genderRate = computed(() => props.genderRate);
 </script>
 
 <template>

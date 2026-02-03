@@ -1,7 +1,11 @@
 <script setup>
+import { computed } from 'vue';
+
 import Sprite from './Sprite.vue';
 
-const { next, prev } = defineProps(['next', 'prev']);
+const props = defineProps(['next', 'prev']);
+const next = computed(() => props.next);
+const prev = computed(() => props.prev);
 </script>
 
 <template>

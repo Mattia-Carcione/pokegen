@@ -5,6 +5,7 @@ import { Pokemon } from "@/modules/pokegen/domain/entities/Pokemon";
 import { ITypePokemonRepository } from "@/modules/pokegen/domain/repositories/ITypePokemonRepository";
 import { TypeDto } from "@/modules/pokegen/data/models/dtos/TypeDto";
 import { IPokemonRepository } from "@/modules/pokegen/domain/repositories/IPokemonRepository";
+import { safeFetch } from "@/core/utils/async/SafeFetch";
 
 /**
  * Repository per ottenere i Pokémon associati a un tipo.
@@ -33,9 +34,9 @@ export class TypePokemonRepository implements ITypePokemonRepository {
 
     this.logger.debug(`[${this.className}] - Cache miss, recupero Pokémon per tipo: ${type}`);
     const typeDto = await this.typeDataSource.fetchData(type);
-    const task = typeDto.pokemon.map(async ({ pokemon }) => this.pokemonRepository.getAsync(pokemon.url));
+    const task = typeDto.pokemon.map(async ({ pokemon }) => safeFetch(this.pokemonRepository.getAsync.bind(this.pokemonRepository), pokemon.url));
 
-    const list = await Promise.all(task);
+    const list = (await Promise.all(task)).filter(Boolean) as Pokemon[];
     const unique = Array.from(new Map(list.map((p) => [p.nameSpecies, p])).values());
 
     this.cache.set(key, unique, 1000 * 60 * 60);
