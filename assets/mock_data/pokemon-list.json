@@ -1,0 +1,204 @@
+[
+  {
+    "id": 16,
+    "name": "pidgey",
+    "species": { "name": "pidgey", "url": "https://pokeapi.co/api/v2/pokemon-species/16/" },
+    "types": [{ "slot": 1, "type": { "name": "normal", "url": "https://pokeapi.co/api/v2/type/1/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/16.png" } } },
+    "height": 3,
+    "weight": 18,
+    "stats": [{ "base_stat": 40, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "keen-eye", "url": "https://pokeapi.co/api/v2/ability/51/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 56,
+    "name": "mankey",
+    "species": { "name": "mankey", "url": "https://pokeapi.co/api/v2/pokemon-species/56/" },
+    "types": [{ "slot": 1, "type": { "name": "fighting", "url": "https://pokeapi.co/api/v2/type/2/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/56.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/56.png" } } },
+    "height": 5,
+    "weight": 280,
+    "stats": [{ "base_stat": 40, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "vital-spirit", "url": "https://pokeapi.co/api/v2/ability/72/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 41,
+    "name": "zubat",
+    "species": { "name": "zubat", "url": "https://pokeapi.co/api/v2/pokemon-species/41/" },
+    "types": [
+      { "slot": 1, "type": { "name": "poison", "url": "https://pokeapi.co/api/v2/type/4/" } },
+      { "slot": 2, "type": { "name": "flying", "url": "https://pokeapi.co/api/v2/type/3/" } }
+    ],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/41.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/41.png" } } },
+    "height": 8,
+    "weight": 75,
+    "stats": [{ "base_stat": 40, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "inner-focus", "url": "https://pokeapi.co/api/v2/ability/39/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 50,
+    "name": "diglett",
+    "species": { "name": "diglett", "url": "https://pokeapi.co/api/v2/pokemon-species/50/" },
+    "types": [{ "slot": 1, "type": { "name": "ground", "url": "https://pokeapi.co/api/v2/type/5/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/50.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/50.png" } } },
+    "height": 2,
+    "weight": 8,
+    "stats": [{ "base_stat": 10, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "sand-veil", "url": "https://pokeapi.co/api/v2/ability/8/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 74,
+    "name": "geodude",
+    "species": { "name": "geodude", "url": "https://pokeapi.co/api/v2/pokemon-species/74/" },
+    "types": [
+      { "slot": 1, "type": { "name": "rock", "url": "https://pokeapi.co/api/v2/type/6/" } },
+      { "slot": 2, "type": { "name": "ground", "url": "https://pokeapi.co/api/v2/type/5/" } }
+    ],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/74.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/74.png" } } },
+    "height": 4,
+    "weight": 200,
+    "stats": [{ "base_stat": 40, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "rock-head", "url": "https://pokeapi.co/api/v2/ability/69/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 10,
+    "name": "caterpie",
+    "species": { "name": "caterpie", "url": "https://pokeapi.co/api/v2/pokemon-species/10/" },
+    "types": [{ "slot": 1, "type": { "name": "bug", "url": "https://pokeapi.co/api/v2/type/7/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10.png" } } },
+    "height": 3,
+    "weight": 29,
+    "stats": [{ "base_stat": 45, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "shield-dust", "url": "https://pokeapi.co/api/v2/ability/19/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 92,
+    "name": "gastly",
+    "species": { "name": "gastly", "url": "https://pokeapi.co/api/v2/pokemon-species/92/" },
+    "types": [
+      { "slot": 1, "type": { "name": "ghost", "url": "https://pokeapi.co/api/v2/type/8/" } },
+      { "slot": 2, "type": { "name": "poison", "url": "https://pokeapi.co/api/v2/type/4/" } }
+    ],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/92.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/92.png" } } },
+    "height": 13,
+    "weight": 1,
+    "stats": [{ "base_stat": 30, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "levitate", "url": "https://pokeapi.co/api/v2/ability/26/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 81,
+    "name": "magnemite",
+    "species": { "name": "magnemite", "url": "https://pokeapi.co/api/v2/pokemon-species/81/" },
+    "types": [
+      { "slot": 1, "type": { "name": "electric", "url": "https://pokeapi.co/api/v2/type/13/" } },
+      { "slot": 2, "type": { "name": "steel", "url": "https://pokeapi.co/api/v2/type/9/" } }
+    ],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/81.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/81.png" } } },
+    "height": 3,
+    "weight": 60,
+    "stats": [{ "base_stat": 25, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "magnet-pull", "url": "https://pokeapi.co/api/v2/ability/42/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 4,
+    "name": "charmander",
+    "species": { "name": "charmander", "url": "https://pokeapi.co/api/v2/pokemon-species/4/" },
+    "types": [{ "slot": 1, "type": { "name": "fire", "url": "https://pokeapi.co/api/v2/type/10/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/4.png" } } },
+    "height": 6,
+    "weight": 85,
+    "stats": [{ "base_stat": 39, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "blaze", "url": "https://pokeapi.co/api/v2/ability/66/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 7,
+    "name": "squirtle",
+    "species": { "name": "squirtle", "url": "https://pokeapi.co/api/v2/pokemon-species/7/" },
+    "types": [{ "slot": 1, "type": { "name": "water", "url": "https://pokeapi.co/api/v2/type/11/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/7.png" } } },
+    "height": 5,
+    "weight": 90,
+    "stats": [{ "base_stat": 44, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "torrent", "url": "https://pokeapi.co/api/v2/ability/67/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 1,
+    "name": "bulbasaur",
+    "species": { "name": "bulbasaur", "url": "https://pokeapi.co/api/v2/pokemon-species/1/" },
+    "types": [
+      { "slot": 1, "type": { "name": "grass", "url": "https://pokeapi.co/api/v2/type/12/" } },
+      { "slot": 2, "type": { "name": "poison", "url": "https://pokeapi.co/api/v2/type/4/" } }
+    ],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png" } } },
+    "height": 7,
+    "weight": 69,
+    "stats": [{ "base_stat": 45, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "overgrow", "url": "https://pokeapi.co/api/v2/ability/65/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 25,
+    "name": "pikachu",
+    "species": { "name": "pikachu", "url": "https://pokeapi.co/api/v2/pokemon-species/25/" },
+    "types": [{ "slot": 1, "type": { "name": "electric", "url": "https://pokeapi.co/api/v2/type/13/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png" } } },
+    "height": 4,
+    "weight": 60,
+    "stats": [{ "base_stat": 35, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "static", "url": "https://pokeapi.co/api/v2/ability/9/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 63,
+    "name": "abra",
+    "species": { "name": "abra", "url": "https://pokeapi.co/api/v2/pokemon-species/63/" },
+    "types": [{ "slot": 1, "type": { "name": "psychic", "url": "https://pokeapi.co/api/v2/type/14/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/63.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/63.png" } } },
+    "height": 9,
+    "weight": 195,
+    "stats": [{ "base_stat": 25, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "synchronize", "url": "https://pokeapi.co/api/v2/ability/28/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 220,
+    "name": "swinub",
+    "species": { "name": "swinub", "url": "https://pokeapi.co/api/v2/pokemon-species/220/" },
+    "types": [{ "slot": 1, "type": { "name": "ice", "url": "https://pokeapi.co/api/v2/type/15/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/220.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/220.png" } } },
+    "height": 4,
+    "weight": 65,
+    "stats": [{ "base_stat": 50, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "oblivious", "url": "https://pokeapi.co/api/v2/ability/12/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 147,
+    "name": "dratini",
+    "species": { "name": "dratini", "url": "https://pokeapi.co/api/v2/pokemon-species/147/" },
+    "types": [{ "slot": 1, "type": { "name": "dragon", "url": "https://pokeapi.co/api/v2/type/16/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/147.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/147.png" } } },
+    "height": 18,
+    "weight": 33,
+    "stats": [{ "base_stat": 41, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "shed-skin", "url": "https://pokeapi.co/api/v2/ability/61/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 262,
+    "name": "mightyena",
+    "species": { "name": "mightyena", "url": "https://pokeapi.co/api/v2/pokemon-species/262/" },
+    "types": [{ "slot": 1, "type": { "name": "dark", "url": "https://pokeapi.co/api/v2/type/17/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/262.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/262.png" } } },
+    "height": 10,
+    "weight": 370,
+    "stats": [{ "base_stat": 70, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "intimidate", "url": "https://pokeapi.co/api/v2/ability/22/" }, "is_hidden": false, "slot": 1 }]
+  },
+  {
+    "id": 35,
+    "name": "clefairy",
+    "species": { "name": "clefairy", "url": "https://pokeapi.co/api/v2/pokemon-species/35/" },
+    "types": [{ "slot": 1, "type": { "name": "fairy", "url": "https://pokeapi.co/api/v2/type/18/" } }],
+    "sprites": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/35.png", "other": { "home": { "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/35.png" } } },
+    "height": 6,
+    "weight": 75,
+    "stats": [{ "base_stat": 70, "stat": { "name": "hp" } }],
+    "abilities": [{ "ability": { "name": "cute-charm", "url": "https://pokeapi.co/api/v2/ability/56/" }, "is_hidden": false, "slot": 1 }]
+  }
+]

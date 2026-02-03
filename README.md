@@ -10,9 +10,11 @@ NB: il progetto è volutamente over ingegnerizzato, poiché usato a scopo didatt
 - Abilità (normali e nascoste) con slot e tabella dedicata nella pagina dettaglio.
 - Varianti/forme con elenco navigabile e sprite dedicate.
 - Ricerca Pokémon con input dedicato e debounce, basata su indice PokeAPI locale e fetch dei dettagli.
+- Prefetch iniziale della lista tipi (`/type`) all'avvio, con caching in memoria.
 - Stato centralizzato con Pinia e controller/use-case che orchestrano repository e store.
 - Client HTTP Axios con retry configurabile, exponential backoff con jitter e cache IndexedDB.
 - Mock data locali in `assets/mock_data` utilizzati in modalità development (incl. `pokeapi-list.json`).
+- Mock dettagliato dei tipi in `assets/mock_data/types-detail.json` e lista Pokémon ridotta in `assets/mock_data/pokemon-list.json` per la ricerca per tipo in dev.
 - Dependency Injection tramite `AppContainer` e container feature-specific (PokéGen, Shared) per la gestione delle dipendenze.
 - Sprite ufficiali scaricati come Blob tramite controller dedicato, con lazy loading via Intersection Observer, skeleton e fallback SVG per artwork mancanti.
 - Arricchimento sprite per evoluzioni e varianti tramite servizi dedicati e facade composita.
@@ -337,9 +339,11 @@ NB: the project is intentionally over-engineered, as it is used for educational 
 * Abilities (normal and hidden) with slots and a dedicated table in the detail page.
 * Variants/forms list with dedicated sprites.
 * Pokémon search with dedicated input and debounce, based on a local PokeAPI index and fetching of details.
+* Initial prefetch of the types list (`/type`) on app mount, cached in memory.
 * Centralized state with Pinia and controller/use-case layers that orchestrate repositories and store.
 * Axios HTTP client with configurable retry, exponential backoff with jitter, and IndexedDB cache.
 * Local mock data in `assets/mock_data` used in development mode (incl. `pokeapi-list.json`).
+* Detailed types mock in `assets/mock_data/types-detail.json` and reduced Pokémon list in `assets/mock_data/pokemon-list.json` for type search in dev.
 * Dependency Injection via `AppContainer` and feature-specific containers (PokéGen, Shared) for dependency management.
 * Official sprites downloaded as Blobs via a dedicated controller, with lazy loading via Intersection Observer, skeletons, and SVG fallback for missing artwork.
 * Sprite enrichment for evolutions and variants via dedicated services and a composite facade.

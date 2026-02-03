@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "name": "normal",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "pidgey", "url": "https://pokeapi.co/api/v2/pokemon/16/" } }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "fighting",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "mankey", "url": "https://pokeapi.co/api/v2/pokemon/56/" } }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "flying",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "zubat", "url": "https://pokeapi.co/api/v2/pokemon/41/" } }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "poison",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "zubat", "url": "https://pokeapi.co/api/v2/pokemon/41/" } }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "ground",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "diglett", "url": "https://pokeapi.co/api/v2/pokemon/50/" } }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "rock",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "geodude", "url": "https://pokeapi.co/api/v2/pokemon/74/" } }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "bug",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "caterpie", "url": "https://pokeapi.co/api/v2/pokemon/10/" } }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "ghost",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "gastly", "url": "https://pokeapi.co/api/v2/pokemon/92/" } }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "steel",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "magnemite", "url": "https://pokeapi.co/api/v2/pokemon/81/" } }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "fire",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "charmander", "url": "https://pokeapi.co/api/v2/pokemon/4/" } }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "water",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "squirtle", "url": "https://pokeapi.co/api/v2/pokemon/7/" } }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "grass",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "bulbasaur", "url": "https://pokeapi.co/api/v2/pokemon/1/" } }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "electric",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "pikachu", "url": "https://pokeapi.co/api/v2/pokemon/25/" } }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "psychic",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "abra", "url": "https://pokeapi.co/api/v2/pokemon/63/" } }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "ice",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "swinub", "url": "https://pokeapi.co/api/v2/pokemon/220/" } }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "dragon",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "dratini", "url": "https://pokeapi.co/api/v2/pokemon/147/" } }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "dark",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "mightyena", "url": "https://pokeapi.co/api/v2/pokemon/262/" } }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "fairy",
+    "pokemon": [
+      { "slot": 1, "pokemon": { "name": "clefairy", "url": "https://pokeapi.co/api/v2/pokemon/35/" } }
+    ]
+  }
+]

@@ -5,9 +5,13 @@ import { RouterView } from 'vue-router';
 import ScrollToTop from '@/shared/presentation/components/ScrollToTop.vue';
 
 const pokeApiController = appContainer.pokeApiController();
+const pokemonTypesController = appContainer.pokemonTypesController();
 
 onMounted(async () => {
-  await pokeApiController.loadData();
+  await Promise.all([
+    pokeApiController.loadData(),
+    pokemonTypesController.loadData(),
+  ]);
 });
 </script>
 

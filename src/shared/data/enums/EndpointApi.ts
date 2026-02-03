@@ -7,4 +7,6 @@ export enum EndpointApi {
     PokemonSpecies = 'pokemon-species/',
     Generation = 'generation/',
     EvolutionChain = 'evolution-chain/',
+    TypeList = 'type?limit=1000000',
+    Type = 'type/',
 }

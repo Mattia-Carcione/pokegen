@@ -10,6 +10,7 @@ import { SharedContainer } from "@/shared/factories/SharedContainer";
 import { IUsePokeApiController } from "@/modules/pokegen/presentation/controllers/contracts/IUsePokeApiController";
 import { IUseGenerationController } from "@/modules/pokegen/presentation/controllers/contracts/IUseGenerationController";
 import { IUsePokemonController } from "@/modules/pokegen/presentation/controllers/contracts/IUsePokemonController";
+import { IUsePokemonTypesController } from "@/modules/pokegen/presentation/controllers/contracts/IUsePokemonTypesController";
 
 /**
  * Container per la gestione delle dipendenze dell'applicazione PokéGen.
@@ -19,6 +20,7 @@ class AppContainer {
   readonly pokemonController: () => IUsePokemonController;
   readonly blobController: () => IUseControllerBase;
   readonly pokeApiController: () => IUsePokeApiController;
+  readonly pokemonTypesController: () => IUsePokemonTypesController;
 
   constructor(env: EnvironmentEnum) {
     // --- LOGGERS ---
@@ -38,13 +40,14 @@ class AppContainer {
 
       // --- CONTAINERS ---
       const { blobController, cache } = SharedContainer.build(env, { httpClient, httpMapper, logger });
-      const { generationController, pokemonController, pokeApiController } = PokegenContainer.build(env, { httpClient, httpMapper, cache, logger });
+      const { generationController, pokemonController, pokeApiController, pokemonTypesController } = PokegenContainer.build(env, { httpClient, httpMapper, cache, logger });
 
       // --- ASSIGNMENTS ---
       this.generationController = generationController;
       this.pokemonController = pokemonController;
       this.blobController = blobController;
       this.pokeApiController = pokeApiController;
+      this.pokemonTypesController = pokemonTypesController;
 
       logger.info("[AppContainer] - App avviata con successo.")
     } catch (error) {

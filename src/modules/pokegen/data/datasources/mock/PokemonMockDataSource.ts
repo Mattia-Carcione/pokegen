@@ -1,4 +1,5 @@
 import pokemonMockData from "@/../assets/mock_data/pokemon.json";
+import pokemonListMockData from "@/../assets/mock_data/pokemon-list.json";
 import { IDataSource } from "@/core/contracts/data/IDataSource";
 import { ExternalServiceUnavailableError } from "@/core/errors/ExternalServiceUnavailableError";
 import { PokemonDto } from "@/modules/pokegen/data/models/dtos/PokemonDto";
@@ -9,9 +10,11 @@ import { PokemonDto } from "@/modules/pokegen/data/models/dtos/PokemonDto";
  */
 export class PokemonMockDataSource implements IDataSource<PokemonDto> {
     private mockData: PokemonDto;
+    private listMockData: PokemonDto[];
 
     constructor() {
         this.mockData = pokemonMockData as PokemonDto;
+        this.listMockData = pokemonListMockData as PokemonDto[];
     }
     
     /**
@@ -21,16 +24,23 @@ export class PokemonMockDataSource implements IDataSource<PokemonDto> {
      * 
      * @throws DataSourceError se il recupero dei dati fallisce
      */
-    async fetchData(_endpoint: string): Promise<PokemonDto> {
+    async fetchData(endpoint: string): Promise<PokemonDto> {
         try {
             // Simula un piccolo delay per replicare il comportamento di una chiamata HTTP
             await new Promise(resolve => setTimeout(resolve, 10));
             
-            // Verifica che i dati mock siano validi
+            const normalized = this.normalizeEndpoint(endpoint);
+            const byName = this.listMockData.find((p) => p.name?.toLowerCase() === normalized);
+            if (byName) return byName;
+
+            const byId = this.listMockData.find((p) => String(p.id) === normalized);
+            if (byId) return byId;
+
+            // Fallback ai dati singoli mock se non presente nella lista
             if (!this.mockData || !this.mockData.id) {
                 throw new Error("Dati mock non validi o mancanti");
             }
-            
+
             return this.mockData;
         } catch (error) {
             throw new ExternalServiceUnavailableError("Errore nel recupero dei dati del Pokémon dal mock." + " \n Dettagli: " + (error as Error).message);
@@ -43,5 +53,14 @@ export class PokemonMockDataSource implements IDataSource<PokemonDto> {
      */
     setMockData(newData: PokemonDto): void {
         this.mockData = newData;
+    }
+
+    private normalizeEndpoint(endpoint: string): string {
+        const value = endpoint.trim().toLowerCase();
+        const cleaned = value.replace(/\/+$/, "");
+
+        const parts = cleaned.split("/pokemon/");
+        const last = parts[parts.length - 1];
+        return last.replace(/\/+$/, "");
     }
 }

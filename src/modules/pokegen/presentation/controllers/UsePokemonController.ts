@@ -9,8 +9,9 @@ import { DetailViewModel } from "../viewmodels/DetailViewModel";
 import { TypeRequestEnum } from "../enums/TypeRequestEnum";
 import { Pokemon } from "../../domain/entities/Pokemon";
 import { IUsePokemonController } from "./contracts/IUsePokemonController";
-import { PokeApiStore } from "@/modules/pokegen/presentation/store/types/StoreTypes";
+import { PokeApiStore, PokemonTypesStore } from "@/modules/pokegen/presentation/store/types/StoreTypes";
 import { IGetSearchPokemonUseCase } from "../../domain/usecases/IGetSearchPokemonUseCase";
+import { IGetPokemonByTypeUseCase } from "../../domain/usecases/IGetPokemonByTypeUseCase";
 
 /**
  * Implementazione del controller della generazione dei Pokémon.
@@ -33,6 +34,8 @@ export class UsePokemonController extends IUsePokemonController {
         private readonly useCase: IGetPokemonUseCase,
         private readonly detailUseCase: IGetPokemonDetailUseCase,
         private readonly pokeSearchUseCase: IGetSearchPokemonUseCase,
+        private readonly pokemonTypesStore: PokemonTypesStore,
+        private readonly pokemonByTypeUseCase: IGetPokemonByTypeUseCase,
         private readonly mapper: IPokemonViewMapper,
         private readonly logger: ILogger
     ) {
@@ -112,7 +115,25 @@ export class UsePokemonController extends IUsePokemonController {
     async searching(input: { endpoint: string, req: TypeRequestEnum }): Promise<void> {
         this.store.setInit(input);
         this.store.pokemon = [];
-        await this.pokeApiStore.search(input.endpoint, this.pokeSearchUseCase);
+        const value = input.endpoint.trim().toLowerCase();
+
+        const typeList = this.pokemonTypesStore.list;
+        const isTypeSearch = !!typeList?.some((t) => t.name.toLowerCase() === value);
+
+        if (isTypeSearch) {
+            const result = await this.pokemonByTypeUseCase.execute(value);
+            if (!result.success || !result.data || result.data.length === 0) {
+                this.store.loading = false;
+                this.store.error = result.error ?? new Error(`No Pokémon found for the given type: ${value}.`);
+                return;
+            }
+
+            this.store.pokemon = result.data;
+            this.store.loading = false;
+            return;
+        }
+
+        await this.pokeApiStore.search(value, this.pokeSearchUseCase);
 
         const data = this.pokeApiStore.data;
         if (!data || data.length === 0) {
