@@ -72,6 +72,12 @@ import { ITypeDetailRepository } from "@/modules/pokegen/domain/repositories/ITy
 import { IGetPokemonTypesDetailUseCase } from "@/modules/pokegen/domain/usecases/IGetPokemonTypesDetailUseCase";
 import { ITypePokemonRepository } from "@/modules/pokegen/domain/repositories/ITypePokemonRepository";
 import { IGetPokemonByTypeUseCase } from "@/modules/pokegen/domain/usecases/IGetPokemonByTypeUseCase";
+import { ITypeEffectivenessService } from "@/modules/pokegen/application/services/contracts/ITypeEffectivenessService";
+import { TypeEffectivenessService } from "@/modules/pokegen/application/services/TypeEffectivenessService";
+import { ITypeEffectivenessCalculator } from "@/modules/pokegen/application/services/contracts/ITypeEffectivenessCalculator";
+import { TypeEffectivenessCalculator } from "@/modules/pokegen/application/services/TypeEffectivenessCalculator";
+import { ITypeEffectivenessViewMapper } from "@/modules/pokegen/presentation/mappers/contracts/ITypeEffectivenessViewMapper";
+import { TypeEffectivenessViewMapper } from "@/modules/pokegen/presentation/mappers/TypeEffectivenessViewMapper";
 
 /**
  * Classe statica per la creazione dei controller della feature pokegen.
@@ -106,6 +112,9 @@ export class PokegenContainer {
         const pokemonViewMapper = FactoryHelper.create<PokemonViewMapper>(PokemonViewMapper, deps.logger);
         
         const navbarMapper = FactoryHelper.create<NavBarMapper>(NavBarMapper, deps.logger);
+
+        const typeEffectivenessViewMapper = FactoryHelper
+            .create<ITypeEffectivenessViewMapper>(TypeEffectivenessViewMapper, deps.logger);
         
         // --- DATA SOURCES ---
         const dataSourceFactoryInput = [deps.httpClient, deps.httpMapper, deps.logger];
@@ -166,6 +175,12 @@ export class PokegenContainer {
         const pokemonSpriteEnricherService = FactoryHelper
             .create<ISpriteEnricherService>(CompositeSpriteEnricherServiceFacade, [evolutionSpriteEnricherService, varietySpriteEnricherService], deps.logger);
 
+        const typeEffectivenessCalculator = FactoryHelper
+            .create<ITypeEffectivenessCalculator>(TypeEffectivenessCalculator);
+
+        const typeEffectivenessService = FactoryHelper
+            .create<ITypeEffectivenessService>(TypeEffectivenessService, typeDetailRepository, typeEffectivenessCalculator, deps.logger);
+
         // --- USE CASES ---
         const generationUseCase = FactoryHelper
             .create<IGetGenerationUseCase>(GetGenerationUseCase, generationRepository, deps.logger);
@@ -193,7 +208,7 @@ export class PokegenContainer {
             .create<UseGenerationController>(UseGenerationController, useGenerationStore(), generationUseCase, navbarMapper, deps.logger);
         
         const pkmController = () => FactoryHelper
-            .create<UsePokemonController>(UsePokemonController, usePokegenStore(), usePokeApiStore(), pokemonUseCase, pokemonDetailUseCase, searchPokemonUseCase, usePokemonTypesStore(), pokemonByTypeUseCase, pokemonViewMapper, deps.logger);
+            .create<UsePokemonController>(UsePokemonController, usePokegenStore(), usePokeApiStore(), pokemonUseCase, pokemonDetailUseCase, searchPokemonUseCase, usePokemonTypesStore(), pokemonByTypeUseCase, typeEffectivenessService, typeEffectivenessViewMapper, pokemonViewMapper, deps.logger);
         
         const pkApiController = () => FactoryHelper
             .create<UsePokeApiController>(UsePokeApiController, usePokeApiStore(), pokeapiUseCase, deps.logger);

@@ -54,6 +54,7 @@ export const TYPE_ICONS: Record<string, string> = {
   psychic: `${BASE_URI}icons/types/psychic.svg`,
   rock: `${BASE_URI}icons/types/rock.svg`,
   steel: `${BASE_URI}icons/types/steel.svg`,
+  stellar: `${BASE_URI}icons/types/stellar.svg`,
 };
 
 /**

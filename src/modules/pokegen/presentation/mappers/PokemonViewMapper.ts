@@ -38,7 +38,7 @@ export class PokemonViewMapper implements IPokemonViewMapper {
                     icon: TYPE_ICONS[type.name],
                     name: StringHelper.capitalize(type.name),
                 })),
-                name: StringHelper.capitalize(source.name),
+                name: StringHelper.replace(StringHelper.capitalize(source.nameSpecies), '-', ' '),
                 href: { name: PokegenRouteName.Pokemon, params: { name: source.nameSpecies } },
             }
         } catch (error) {

@@ -21,6 +21,7 @@ export const TYPE_COLORS: Record<string, string> = {
   dark: "#705746",
   steel: "#B7B7CE",
   fairy: "#D685AD",
+  stellar: "#C7B8FF",
 };
 
 export const TYPE_ICONS: Record<string, string> = {
@@ -42,4 +43,5 @@ export const TYPE_ICONS: Record<string, string> = {
   psychic: `${ASSET_BASE_URL}icons/types/psychic.svg`,
   rock: `${ASSET_BASE_URL}icons/types/rock.svg`,
   steel: `${ASSET_BASE_URL}icons/types/steel.svg`,
+  stellar: `${ASSET_BASE_URL}icons/types/stellar.svg`,
 };

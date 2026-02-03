@@ -39,6 +39,7 @@ usePokegenDetailSeo(pkmDetailController);
                     :prev="pkmDetailController.data.value.prev"
                     :next="pkmDetailController.data.value.next"
                     :name="props.name"
+                    :typeEffectiveness="pkmDetailController.data.value.typeEffectiveness"
                 />
             </template>
             

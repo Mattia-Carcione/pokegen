@@ -118,7 +118,7 @@ export const createStructuredData = ({
       name: title || SITE_NAME,
       description: description || DEFAULT_DESCRIPTION,
       url: absoluteUrl,
-      isPartOf: { '@id': `${absoluteUrl}#website` },
+      isPartOf: { '@id': `${siteHome}#website` },
       primaryImageOfPage: {
         '@type': 'ImageObject',
         url: absoluteImage,
@@ -289,6 +289,7 @@ export const setSeoTags = ({
   setMetaContent('property', 'og:type', finalType);
   setMetaContent('property', 'og:url', finalUrl);
   setMetaContent('property', 'og:image', finalImage);
+  setMetaContent('property', 'og:image:secure_url', finalImage);
   setMetaContent('property', 'og:image:width', OG_IMAGE_WIDTH);
   setMetaContent('property', 'og:image:height', OG_IMAGE_HEIGHT);
   setMetaContent('property', 'og:image:alt', title || SITE_NAME);

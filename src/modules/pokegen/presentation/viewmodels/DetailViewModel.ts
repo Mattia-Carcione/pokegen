@@ -1,4 +1,5 @@
 import { PokemonVM } from "./types/PokemonVM";
+import { TypeEffectivenessVM } from "./types/TypeEffectivenessVM";
 
 /**
  * Tipo di ViewModel per i dettagli di un Pokémon.
@@ -13,5 +14,6 @@ export class DetailViewModel {
         public readonly pokemon: PokemonVM,
         public readonly prev: PokemonVM | null,
         public readonly next: PokemonVM | null,
+        public readonly typeEffectiveness: TypeEffectivenessVM | null,
     ) {}
 }

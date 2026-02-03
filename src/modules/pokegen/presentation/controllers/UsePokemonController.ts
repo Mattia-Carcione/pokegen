@@ -12,6 +12,9 @@ import { IUsePokemonController } from "./contracts/IUsePokemonController";
 import { PokeApiStore, PokemonTypesStore } from "@/modules/pokegen/presentation/store/types/StoreTypes";
 import { IGetSearchPokemonUseCase } from "../../domain/usecases/IGetSearchPokemonUseCase";
 import { IGetPokemonByTypeUseCase } from "../../domain/usecases/IGetPokemonByTypeUseCase";
+import { ITypeEffectivenessService } from "@/modules/pokegen/application/services/contracts/ITypeEffectivenessService";
+import { TypeEffectivenessVM } from "@/modules/pokegen/presentation/viewmodels/types/TypeEffectivenessVM";
+import { ITypeEffectivenessViewMapper } from "@/modules/pokegen/presentation/mappers/contracts/ITypeEffectivenessViewMapper";
 
 /**
  * Implementazione del controller della generazione dei Pokémon.
@@ -36,6 +39,8 @@ export class UsePokemonController extends IUsePokemonController {
         private readonly pokeSearchUseCase: IGetSearchPokemonUseCase,
         private readonly pokemonTypesStore: PokemonTypesStore,
         private readonly pokemonByTypeUseCase: IGetPokemonByTypeUseCase,
+        private readonly typeEffectivenessService: ITypeEffectivenessService,
+        private readonly typeEffectivenessMapper: ITypeEffectivenessViewMapper,
         private readonly mapper: IPokemonViewMapper,
         private readonly logger: ILogger
     ) {
@@ -158,7 +163,7 @@ export class UsePokemonController extends IUsePokemonController {
      * Costruisce il ViewModel per la vista dei dettagli. 
      * @param data I dati dei Pokémon da mappare.
     */
-    private buildDetailViewModel(data: Pokemon[]): void {
+    private async buildDetailViewModel(data: Pokemon[]): Promise<void> {
         const name = this.store.input?.toLowerCase() || '';
         const main = data.find(p => p.nameSpecies.toLowerCase() === name);
 
@@ -167,10 +172,25 @@ export class UsePokemonController extends IUsePokemonController {
         const prev = data[index - 1] ?? null;
         const next = data[index + 1] ?? null;
 
+        const typeEffectiveness = await this.mapTypeEffectiveness(main);
+
         this.detailVM.value = new DetailViewModel(
             this.mapper.mapDetail(main),
             prev ? this.mapper.map(prev) : null,
-            next ? this.mapper.map(next) : null
+            next ? this.mapper.map(next) : null,
+            typeEffectiveness
         );
+    }
+
+    private async mapTypeEffectiveness(pokemon: Pokemon): Promise<TypeEffectivenessVM | null> {
+        try {
+            const types = pokemon.types.map((t) => t.name);
+            const effectiveness = await this.typeEffectivenessService.getEffectiveness(types);
+
+            return this.typeEffectivenessMapper.map(effectiveness);
+        } catch (error) {
+            this.logger.error("[UsePokemonController] - Error computing type effectiveness." + (error as Error).message);
+            return null;
+        }
     }
 }

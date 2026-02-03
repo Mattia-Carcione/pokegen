@@ -1,7 +1,6 @@
 import { IDataSource } from "@/core/contracts/data/IDataSource";
 import { ICache } from "@/core/contracts/infrastructure/cache/ICache";
 import { ILogger } from "@/core/contracts/infrastructure/logger/ILogger";
-import { NotImplementedError } from "@/core/errors/NotImplementedError";
 import { TypeDto } from "@/modules/pokegen/data/models/dtos/TypeDto";
 import { ITypeDetailRepository } from "@/modules/pokegen/domain/repositories/ITypeDetailRepository";
 import { ITypeRepository } from "@/modules/pokegen/domain/repositories/ITypeRepository";
@@ -15,16 +14,27 @@ export class TypeDetailRepository implements ITypeDetailRepository {
   constructor(
     private readonly typeRepository: ITypeRepository,
     private readonly typeDataSource: IDataSource<TypeDto>,
-    private readonly cache: ICache<TypeDto[]>,
+    private readonly cache: ICache<TypeDto[] | TypeDto>,
     private readonly logger: ILogger
   ) { }
 
   /**
    * Metodo non implementato per recuperare un singolo tipo.
-   * @throws NotImplementedError
    */
-  async getAsync(): Promise<TypeDto> {
-    throw new NotImplementedError("[TypeDetailRepository] - getAsync method is not implemented.");
+  async getAsync(type: string): Promise<TypeDto> {
+    this.logger.debug(`[${this.className}] - Fetching detailed type: ${type}`);
+
+    const key = this.cache.generateKey(this.className, "getAsync", type);
+    const cached = this.cache.get(key);
+    if (cached) {
+      this.logger.debug(`[${this.className}] - Detailed type found in cache: ${type}`);
+      return cached as unknown as TypeDto;
+    }
+
+    this.logger.debug(`[${this.className}] - Cache miss, fetching detailed type: ${type}`);
+    const detail = await this.typeDataSource.fetchData(type);
+    this.cache.set(key, detail, 1000 * 60 * 60);
+    return detail;
   }
 
   /**
@@ -38,7 +48,7 @@ export class TypeDetailRepository implements ITypeDetailRepository {
     const cached = this.cache.get(key);
     if (cached) {
       this.logger.debug(`[${this.className}] - Detailed types list found in cache`);
-      return cached;
+      return cached as unknown as TypeDto[];
     }
 
     this.logger.debug(`[${this.className}] - Cache miss, fetching detailed types list`);
