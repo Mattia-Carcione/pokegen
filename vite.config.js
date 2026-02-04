@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import vitePluginPrerenderer from 'vite-plugin-prerenderer'
+import prerender from 'vite-plugin-prerenderer'
 
 const prerenderRoutes = [
   '/',
@@ -144,7 +144,7 @@ export default defineConfig({
     vue(),
     vueDevTools(),
     tailwindcss(),
-    vitePluginPrerenderer({
+    prerender({
       routes: prerenderRoutes,
     }),
   ],
