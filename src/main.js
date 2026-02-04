@@ -7,6 +7,9 @@ import pinia from './app/providers/Pinia';
 import router from './app/routing';
 import Footer from './app/presentation/layout/Footer.vue';
 import SearchInput from './shared/presentation/components/SearchInput.vue';
+import { bootstrapApp } from './app/bootstrap';
+
+await bootstrapApp();
 
 const app = createApp(App);
 app.use(pinia);

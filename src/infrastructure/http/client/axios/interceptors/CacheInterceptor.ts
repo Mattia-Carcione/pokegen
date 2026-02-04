@@ -1,16 +1,19 @@
 // import { CachedResponse } from "@/core/types/CacheTypes";
-import { CacheDb } from "@/infrastructure/indexedDb/CacheDb";
 import { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { CacheKeyFactory } from "@/infrastructure/indexedDb/CacheKeyFactory";
 import { CachedAxiosResponse, CustomAxiosRequestConfig } from "../types/CacheAxiosConfig";
 import { CachedResponse } from "@/infrastructure/indexedDb/types/CachedResponse";
 import { ILogger } from "@/core/contracts/infrastructure/logger/ILogger";
+import { ICacheDb } from "@/core/contracts/infrastructure/database/ICacheDb";
 
 /**
  * Classi per l'intercettore di cache Axios.
  */
 export class CacheInterceptor {
-    constructor(private readonly logger: ILogger) {}
+    constructor(
+        private readonly cacheDb: ICacheDb,
+        private readonly logger: ILogger
+    ) {}
 
     /**
      * Imposta l'intercettore di risposta per memorizzare le risposte in cache.
@@ -25,7 +28,7 @@ export class CacheInterceptor {
 
                 if (shouldCache) {
                     // La funzione setCachedResponse è tipizzata per accettare AxiosResponse
-                    await new CacheDb(this.logger).setCachedResponse<CachedResponse>(response.config.cacheKey!, response);
+                    await this.cacheDb.setCachedResponse<CachedResponse>(response.config.cacheKey!, response);
                 }
 
                 // Restituisce sempre la risposta originale (o cachata)
@@ -51,7 +54,7 @@ export class CacheInterceptor {
      * @param client - Istanza di Axios su cui applicare l'intercettore.
      * @returns void
      */
-    getCahce(client: AxiosInstance) {
+    getCache(client: AxiosInstance) {
         client.interceptors.request.use(async (config: InternalAxiosRequestConfig & CustomAxiosRequestConfig) => {
                 // Solo richieste GET
                 if (config.method?.toLowerCase() !== 'get') return config;
@@ -60,7 +63,7 @@ export class CacheInterceptor {
                 config.cacheKey = cacheKey; // Conserva la chiave per l'Interceptor di risposta
                 try {
                     // Tipizziamo la risposta attesa
-                    const cachedResponse = await new CacheDb(this.logger).getCachedResponse<CachedResponse>(cacheKey);
+                    const cachedResponse = await this.cacheDb.getCachedResponse<CachedResponse>(cacheKey);
 
                     if (cachedResponse) {
                         // Cache Hit: Restituisce un oggetto che simula la AxiosResponse

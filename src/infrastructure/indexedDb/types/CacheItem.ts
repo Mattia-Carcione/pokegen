@@ -1,4 +1,4 @@
-import { LightweightResponse } from "@/infrastructure/http/types/LightweightResponse";
+import { LightweightResponse } from "@/core/contracts/infrastructure/database/LightweightResponse";
 
 /**
  * Interfaccia per l'elemento completo memorizzato in IndexedDB.

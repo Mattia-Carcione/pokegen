@@ -12,6 +12,14 @@ import { BlobMockDataSource } from "../data/datasources/mock/BlobMockDataSource"
 import { IDataSource } from "@/core/contracts/data/IDataSource";
 import { ICache } from "@/core/contracts/infrastructure/cache/ICache";
 import { InMemoryCache } from "@/infrastructure/cache/InMemoryCache";
+import { RetryEnum } from "@/infrastructure/http/enums/RetryEnum";
+import { BASE_API_URL } from "@/config/appConfig";
+import { AxiosClientFactory } from "@/infrastructure/http/client/axios/AxiosClientFactory";
+import { Logger } from "@/infrastructure/logger/Logger";
+import { CacheDb } from "@/infrastructure/indexedDb/CacheDb";
+import { HttpErrorMapper } from "@/infrastructure/http/mappers/HttpErrorMapper";
+import { DataVersionService } from "@/infrastructure/sync/DataVersionService";
+import { ISyncService } from "@/core/contracts/infrastructure/sync/ISyncService";
 
 /**
  * Classe factory per la creazione di controller e dipendenze condivise.
@@ -25,22 +33,44 @@ export class SharedContainer {
      * @param deps Le dipendenze necessarie per la creazione dei controller.
      * @returns Un oggetto contenente i controller relativi ai Blob.
      */
-    static build(env: EnvironmentEnum, deps: {
-        httpClient: IHttpClient;
-        httpMapper: IHttpErrorMapper;
-        logger: ILogger;
-    }): { blobController: () => IUseControllerBase, cache: ICache<any> } {
+    static build(env: EnvironmentEnum): { 
+        blobController: () => IUseControllerBase,
+        cache: ICache<any>,
+        logger: ILogger,
+        httpClient: IHttpClient,
+        httpMapper: IHttpErrorMapper,
+        dataVersionService: ISyncService
+    } {
+        // --- LOGGERS ---
+        const logger = FactoryHelper.create(Logger, env);
+
+        // --- INFRASTRUCTURE ---
         const cache: ICache<any> = FactoryHelper.create(InMemoryCache);
+        const cacheDb = FactoryHelper.create(CacheDb, logger);
+        const httpFactory = new AxiosClientFactory(cacheDb, logger);
+        const httpClient = httpFactory.create(BASE_API_URL, {
+        retry: 3,
+        retryDelay: 1000,
+        jitter: RetryEnum.FULL
+        });
+        const dataVersionService = FactoryHelper.create(DataVersionService, cacheDb, logger);
 
-        const blobDataSource = FactoryHelper.createByEnvHelper<IDataSource<Blob>>(env, BlobDataSource, BlobMockDataSource, deps.httpClient, deps.httpMapper, deps.logger);
+        // --- HTTP DEPENDENCIES ---
+        const httpMapper = FactoryHelper.create(HttpErrorMapper, logger);
+
+        // --- BLOB DEPENDENCIES ---
+        const blobDataSource = FactoryHelper.createByEnvHelper<IDataSource<Blob>>(env, BlobDataSource, BlobMockDataSource, httpClient, httpMapper, logger);
         
-        const blobRepository = FactoryHelper.create(BlobRepository, blobDataSource, cache, deps.logger);
+        const blobRepository = FactoryHelper.create(BlobRepository, blobDataSource, cache, logger);
 
-        const blobUseCase = FactoryHelper.create(GetBlobUseCase, blobRepository, deps.logger);
-
+        const blobUseCase = FactoryHelper.create(GetBlobUseCase, blobRepository, logger);
         return {
-            blobController: () => FactoryHelper.create(UseBlobController, blobUseCase, deps.logger),
-            cache: cache
+            blobController: () => FactoryHelper.create(UseBlobController, blobUseCase, logger),
+            cache: cache,
+            logger: logger,
+            httpClient: httpClient,
+            httpMapper: httpMapper,
+            dataVersionService: dataVersionService
         }
     }
 }

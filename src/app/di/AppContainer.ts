@@ -1,10 +1,5 @@
 import { IUseControllerBase } from "@/core/contracts/presentation/IUseControllerBase";
 import { EnvironmentEnum } from "@/core/enums/EnvironmentEnum";
-import { AxiosClientFactory } from "@/infrastructure/http/client/axios/AxiosClientFactory";
-import { BASE_API_URL } from "@/config/appConfig";
-import { HttpErrorMapper } from "@/infrastructure/http/mappers/HttpErrorMapper";
-import { RetryEnum } from "@/infrastructure/http/enums/RetryEnum";
-import { Logger } from "@/infrastructure/logger/Logger";
 import { PokegenContainer } from "./pokegen/PokegenContainer";
 import { SharedContainer } from "@/shared/factories/SharedContainer";
 import { IUsePokeApiController } from "@/modules/pokegen/presentation/controllers/contracts/IUsePokeApiController";
@@ -13,6 +8,8 @@ import { IUsePokemonController } from "@/modules/pokegen/presentation/controller
 import { IUsePokemonTypesController } from "@/modules/pokegen/presentation/controllers/contracts/IUsePokemonTypesController";
 import { IUseVersionGroupsController } from "@/modules/pokegen/presentation/controllers/contracts/IUseVersionGroupsController";
 import { IUseMoveDetailsController } from "@/modules/pokegen/presentation/controllers/contracts/IUseMoveDetailsController";
+import { ILogger } from "@/core/contracts/infrastructure/logger/ILogger";
+import { ISyncService } from "@/core/contracts/infrastructure/sync/ISyncService";
 
 /**
  * Container per la gestione delle dipendenze dell'applicazione PokéGen.
@@ -25,28 +22,17 @@ class AppContainer {
   readonly pokemonTypesController: () => IUsePokemonTypesController;
   readonly versionGroupsController: () => IUseVersionGroupsController;
   readonly moveDetailsController: () => IUseMoveDetailsController;
+  readonly dataVersionService: () => ISyncService;
+  readonly logger: () =>ILogger;
 
   constructor(env: EnvironmentEnum) {
-    // --- LOGGERS ---
-    const logger = new Logger(env);
     try {
-
-      // --- INFRASTRUCTURE ---
-      const httpFactory = new AxiosClientFactory(logger);
-      const httpClient = httpFactory.create(BASE_API_URL, {
-        retry: 3,
-        retryDelay: 1000,
-        jitter: RetryEnum.FULL
-      });
-
-      // --- MAPPERS ---
-      const httpMapper = new HttpErrorMapper(logger);
-
       // --- CONTAINERS ---
-      const { blobController, cache } = SharedContainer.build(env, { httpClient, httpMapper, logger });
+      const { blobController, cache, httpClient, httpMapper, logger, dataVersionService } = SharedContainer.build(env);
       const { generationController, pokemonController, pokeApiController, pokemonTypesController, versionGroupsController, moveDetailsController } = PokegenContainer.build(env, { httpClient, httpMapper, cache, logger });
 
       // --- ASSIGNMENTS ---
+      this.logger = () => logger;
       this.generationController = generationController;
       this.pokemonController = pokemonController;
       this.blobController = blobController;
@@ -54,10 +40,8 @@ class AppContainer {
       this.pokemonTypesController = pokemonTypesController;
       this.versionGroupsController = versionGroupsController;
       this.moveDetailsController = moveDetailsController;
-
-      logger.info("[AppContainer] - App avviata con successo.")
+      this.dataVersionService = () => dataVersionService;
     } catch (error) {
-      logger.error("[AppContainer] - Errore durante l'avvio dell'app." + (error as Error).message, error);
       throw error;
     }
   }

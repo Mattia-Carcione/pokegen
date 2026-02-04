@@ -1,6 +1,6 @@
 <script setup>
     import { useRoute } from 'vue-router';
-    import { watch } from 'vue';
+    import { watch, toRef } from 'vue';
     
     import { appContainer } from '@/app/di/AppContainer';
     import { TypeRequestEnum } from '../enums/TypeRequestEnum';
@@ -8,17 +8,17 @@
     import { usePokegenHomeSeo } from '@/modules/pokegen/presentation/composables/usePokegenSeo';
 
     import Loader from '@/shared/presentation/components/Loader.vue';
-    import CustomSection from '@/shared/presentation/components/CustomSection.vue';
     import Card from '../components/Card.vue';
     import ErrorView from '@/shared/presentation/components/404View.vue';
 
     const route = useRoute();
     const pokemonController = appContainer.pokemonController();
-    const { id } = defineProps({ id: String });
+    const props = defineProps({ id: String });
+    const id = toRef(props, 'id');
     
-    usePokegenHomeSeo(route, { value: id });
+    usePokegenHomeSeo(route, id);
 
-    watch(() => [route.name, id, route.query.search], async ([routeName, newId, search]) => {
+    watch(() => [route.name, id.value, route.query.search], async ([routeName, newId, search]) => {
         if (typeof search === 'string' && search.length >= 3) {
             await pokemonController.searching({
                 endpoint: search,
@@ -26,9 +26,9 @@
             });
             return;
         }
-        if (routeName && id) {
+        if (routeName && newId) {
             await pokemonController.loadData({
-                endpoint: id,
+                endpoint: newId,
                 req: TypeRequestEnum.HOME
             });
             return;
@@ -49,9 +49,11 @@
         <template v-else>
             <template v-if="pokemonController.data.value instanceof HomeViewModel && pokemonController.data.value.pokemon">
                 <h2 class="sr-only">Pokémon results</h2>
-                <CustomSection>
-                    <Card :card="pkm" v-for="pkm in pokemonController.data.value.pokemon" :key="pkm.id" />
-                </CustomSection>
+                <ul role="list" aria-label="Pokémon list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 p-5">
+                    <li role="listitem" v-for="pkm in pokemonController.data.value.pokemon" :key="pkm.id">
+                        <Card :card="pkm" />
+                    </li>
+                </ul>
             </template>
             
             <template v-else>
