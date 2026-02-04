@@ -3,8 +3,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
-import prerender from 'vite-plugin-prerenderer'
+import prerender from 'vite-plugin-prerender'
 
 const prerenderRoutes = [
   '/',
@@ -142,7 +141,6 @@ export default defineConfig({
   base: '/pokegen/',
   plugins: [
     vue(),
-    vueDevTools(),
     tailwindcss(),
     prerender({
       routes: prerenderRoutes,
