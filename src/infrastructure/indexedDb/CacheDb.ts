@@ -227,4 +227,44 @@ export class CacheDb implements ICacheDb {
             this.logger.error("Errore IndexedDB (clearStore):", error);
         }
     }
+
+    /**
+     * Cancella selettivamente gli elementi memorizzati nella cache.
+     * @param prefixes - Prefissi delle chiavi da rimuovere.
+     */
+    async clearStoreByPrefixes(prefixes: string[]): Promise<void> {
+        if (!prefixes.length) return;
+
+        try {
+            const db = await this.getDB();
+            const transaction: IDBTransaction = db.transaction([STORE_NAME], 'readwrite');
+            const store: IDBObjectStore = transaction.objectStore(STORE_NAME);
+            const request: IDBRequest<IDBCursorWithValue | null> = store.openCursor();
+
+            await new Promise<void>((resolve, reject) => {
+                request.onsuccess = (event: Event) => {
+                    const cursor = (event.target as IDBRequest<IDBCursorWithValue | null>).result;
+                    if (!cursor) {
+                        resolve();
+                        return;
+                    }
+
+                    const key = String(cursor.key);
+                    const match = prefixes.some((prefix) => key.includes(prefix));
+                    if (match) {
+                        cursor.delete();
+                    }
+
+                    cursor.continue();
+                };
+
+                request.onerror = (event: Event) => {
+                    this.logger.error("Errore IndexedDB clearStoreByPrefixes:", (event.target as IDBRequest).error);
+                    reject((event.target as IDBRequest).error);
+                };
+            });
+        } catch (error) {
+            this.logger.error("Errore IndexedDB (clearStoreByPrefixes):", error);
+        }
+    }
 }

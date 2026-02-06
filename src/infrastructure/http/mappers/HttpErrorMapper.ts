@@ -1,15 +1,17 @@
-import { IHttpErrorMapper } from "@/core/contracts/infrastructure/http/mappers/IHttpErrorMapper";
 import { HttpError } from "../errors/HttpError";
 import { ErrorTypeEnum } from "../enums/ErrorTypeEnum";
-import { NotFoundError } from "@/core/errors/NotFoundError";
-import { UnauthorizedError } from "@/core/errors/UnauthorizedError";
-import { ExternalServiceUnavailableError } from "@/core/errors/ExternalServiceUnavailableError";
+
+import { NotFoundError } from "@/commons/errors/NotFoundError";
+import { UnauthorizedError } from "@/commons/errors/UnauthorizedError";
+import { ExternalServiceUnavailableError } from "@/commons/errors/ExternalServiceUnavailableError";
+
 import { ILogger } from "@/core/contracts/infrastructure/logger/ILogger";
+import { IMapper } from "@/core/contracts/application/IMapper";
 
 /**
  * Mappa gli errori HTTP in errori specifici dell'applicazione.
  */
-export class HttpErrorMapper implements IHttpErrorMapper {
+export class HttpErrorMapper implements IMapper<unknown, never> {
     constructor(private readonly logger: ILogger) {}
     /**
      * Mappa un errore HTTP in un errore specifico.

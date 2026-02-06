@@ -7,7 +7,12 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/shared/*": ["./src/shared/*"],
+      "@/modules/*": ["./src/modules/*"],
+      "@/core/*": ["./src/core/*"],
+      "@/presentation/*": ["./src/presentation/*"],
+      "@/app/*": ["./src/app/*"]
     },
     "types": ["vite/client", "vitest/globals"]
   },

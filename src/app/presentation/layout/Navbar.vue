@@ -1,16 +1,5 @@
 <script setup>
-    import { onMounted } from 'vue';
-    import { RouterLink, useRoute } from 'vue-router';
 
-    import { AppRouteName } from '@/app/routing/AppRouteName';
-    import { appContainer } from '@/app/di/AppContainer';
-
-    const route = useRoute();
-    const genController = appContainer.generationController();
-
-    onMounted(async () => {
-        await genController.loadData();
-    });
 </script>
 
 <template>

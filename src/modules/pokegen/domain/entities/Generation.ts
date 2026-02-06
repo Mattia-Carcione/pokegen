@@ -1,15 +1,15 @@
-import { Pokemon } from "./Pokemon";
+import { NamedResource } from "@/commons/types/CommonTypes";
 
-/**
- * Rappresenta una generazione di Pokémon.
- * @property id (number) - l'id della generazione
- * @property name (string) - il nome della generazione
- * @property pokemonList (Pokemon[]) - la lista delle specie di Pokémon appartenenti a questa generazione
- */
 export class Generation {
     constructor(
-        public readonly version: number,
+        public readonly id: number,
         public readonly name: string,
-        public pokemon: Pokemon[] = []
-    ) {}
+        public readonly abilities: NamedResource[],
+        public readonly mainRegion: NamedResource,
+        public readonly moves: NamedResource[],
+        public readonly pokemonSpecies: NamedResource[],
+        public readonly types: NamedResource[],
+        public readonly versionGroups: NamedResource[],
+        public readonly pokedexId: number
+    ) { }
 }

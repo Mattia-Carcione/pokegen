@@ -1,13 +1,36 @@
-import { appContainer } from "./di/AppContainer";
+import { createApp } from "vue";
 
-/**
- * Funzione di bootstrap dell'applicazione.
- */
-export async function bootstrapApp(): Promise<void> {
-    const logger = appContainer.logger();
-    logger.info("[bootstrapApp] - Avvio della procedura di bootstrap dell'applicazione.");
-    const dataVersionService = appContainer.dataVersionService();
+import { AppContainer } from "@/app/di/AppContainer";
+import pinia from "@/app/providers/Pinia";
+import router from './app/routing/index.js';
+import App from "./App.vue";
 
-    await dataVersionService.syncIfNeeded();
-    logger.info("[bootstrapApp] - Procedura di bootstrap completata con successo.");
+import { useGenerationStore } from "@/modules/pokegen/presentation/stores/UseGenerationStore";
+import Hero from "./presentation/layout/Hero.vue";
+import Navbar from "./presentation/layout/Navbar.vue";
+import Footer from "./presentation/layout/Footer.vue";
+
+export async function bootstrap() {
+  const app = createApp(App);
+  const hero = createApp(Hero);
+  // const search = createApp(SearchIn);
+  const nav = createApp(Navbar);
+  const footer = createApp(Footer);
+
+  app.use(pinia);
+  app.use(router);
+  hero.use(router);
+  nav.use(router);
+  footer.use(router);
+
+  const container = AppContainer.getInstance();
+  const generationController = container.resolveGenerationController();
+
+  const store = useGenerationStore();
+  await store.loadAll(generationController);
+
+  app.mount("#app");
+  hero.mount('#header');
+  nav.mount('#nav');
+  footer.mount('#footer');
 }

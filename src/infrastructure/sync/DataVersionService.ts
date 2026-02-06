@@ -6,9 +6,9 @@ import { ICacheDb } from "@/core/contracts/infrastructure/database/ICacheDb";
  * Tipo per i metadati remoti della versione dei dati.
  */
 type RemoteMetaData = {
-  date: string;
-  version: string;
-  syncedAt?: string;
+    dataVersion: string;
+    timestamp: string;
+    namespaces?: Record<string, string>;
 };
 
 /**
@@ -32,21 +32,38 @@ export class DataVersionService implements ISyncService {
             const remote = await this.fetchRemoteMetaData();
             const local = await this.cacheDb.getMetaData<RemoteMetaData>(this.META_KEY);
 
-            if (!local || local.date !== remote.date || local.version !== remote.version) {
-                this.logger.debug("[DataVersionService] - Sincronizzazione necessaria. Aggiornamento dei metadati locali.");
-                await this.cacheDb.clearStore();
-                await this.cacheDb.setMetaData<RemoteMetaData>(this.META_KEY, {
-                    date: remote.date,
-                    version: remote.version,
-                    syncedAt: new Date().toISOString()
-                });
-            } else {
+            if (!local) {
+                this.logger.debug("[DataVersionService] - Primo avvio, memorizzo metadati remoti.");
+                await this.cacheDb.setMetaData<RemoteMetaData>(this.META_KEY, remote);
+                return;
+            }
+
+            const namespacesToClear: string[] = [];
+
+            pushNamespaceToClear(remote, local, namespacesToClear);
+
+            await this.executeClearStore(namespacesToClear, local, remote);
+
+            await this.cacheDb.setMetaData<RemoteMetaData>(this.META_KEY, remote);
+
+            if (namespacesToClear.length === 0) {
                 this.logger.debug("[DataVersionService] - Nessuna sincronizzazione necessaria.");
                 return;
             }
         } catch (error) {
             this.logger.error("[DataVersionService] - Errore durante la verifica della sincronizzazione dei dati.", error);
             throw error;
+        }
+    }
+
+    private async executeClearStore(namespacesToClear: string[], local: RemoteMetaData, remote: RemoteMetaData) {
+        if (namespacesToClear.length > 0) {
+            this.logger.debug(`[DataVersionService] - Sincronizzazione necessaria per i namespace: ${namespacesToClear.join(', ')}. Pulizia in corso...`);
+            await this.cacheDb.clearStoreByPrefixes(namespacesToClear);
+        } else if (local.dataVersion !== remote.dataVersion) {
+            // Fallback: se cambia la dataVersion ma namespaces uguali, clear globale
+            this.logger.debug("[DataVersionService] - Cambio dataVersion, clear globale");
+            await this.cacheDb.clearStore();
         }
     }
 
@@ -60,5 +77,13 @@ export class DataVersionService implements ISyncService {
             throw new Error(`Failed to fetch remote metadata: ${response.statusText}`);
         }
         return response.json();
+    }
+}
+
+function pushNamespaceToClear(remote: RemoteMetaData, local: RemoteMetaData, namespacesToClear: string[]) {
+    for (const ns of Object.keys(remote.namespaces || {})) {
+        if (!local.namespaces || local.namespaces[ns] !== remote.namespaces![ns]) {
+            namespacesToClear.push(ns);
+        }
     }
 }

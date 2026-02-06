@@ -1,69 +1,43 @@
 {
-  "id": 1,
-  "name": "generation-i",
-  "abilities": [],
-  "main_region": {
-    "name": "kanto",
-    "url": "https://pokeapi.co/api/v2/region/1/"
-  },
-  "moves": [
-    {
-      "name": "pound",
-      "url": "https://pokeapi.co/api/v2/move/1/"
-    },
-    {
-      "name": "karate-chop",
-      "url": "https://pokeapi.co/api/v2/move/2/"
-    }
-  ],
-  "names": [
-    {
-      "name": "Generation I",
-      "language": {
-        "name": "en",
-        "url": "https://pokeapi.co/api/v2/language/9/"
-      }
-    },
-    {
-      "name": "Generazione I",
-      "language": {
-        "name": "it",
-        "url": "https://pokeapi.co/api/v2/language/8/"
-      }
-    }
-  ],
-  "pokemon_species": [
-    {
-      "name": "bulbasaur",
-      "url": "https://pokeapi.co/api/v2/pokemon-species/1/"
-    },
-    {
-      "name": "ivysaur",
-      "url": "https://pokeapi.co/api/v2/pokemon-species/2/"
-    },
-    {
-      "name": "venusaur",
-      "url": "https://pokeapi.co/api/v2/pokemon-species/3/"
-    }
-  ],
-  "types": [
-    {
-      "name": "normal",
-      "url": "https://pokeapi.co/api/v2/type/1/"
-    },
-    {
-      "name": "fighting",
-      "url": "https://pokeapi.co/api/v2/type/2/"
-    }
-  ],
-  "version_groups": [
-    {
-      "name": "red-blue",
-      "url": "https://pokeapi.co/api/v2/version-group/1/"
-    },
-    {
-      "name": "yellow",
-      "url": "https://pokeapi.co/api/v2/version-group/2/"
-    }
-  ]
+    "count": 9,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "name": "generation-i",
+            "url": "https://pokeapi.co/api/v2/generation/1/"
+        },
+        {
+            "name": "generation-ii",
+            "url": "https://pokeapi.co/api/v2/generation/2/"
+        },
+        {
+            "name": "generation-iii",
+            "url": "https://pokeapi.co/api/v2/generation/3/"
+        },
+        {
+            "name": "generation-iv",
+            "url": "https://pokeapi.co/api/v2/generation/4/"
+        },
+        {
+            "name": "generation-v",
+            "url": "https://pokeapi.co/api/v2/generation/5/"
+        },
+        {
+            "name": "generation-vi",
+            "url": "https://pokeapi.co/api/v2/generation/6/"
+        },
+        {
+            "name": "generation-vii",
+            "url": "https://pokeapi.co/api/v2/generation/7/"
+        },
+        {
+            "name": "generation-viii",
+            "url": "https://pokeapi.co/api/v2/generation/8/"
+        },
+        {
+            "name": "generation-ix",
+            "url": "https://pokeapi.co/api/v2/generation/9/"
+        }
+    ]
 }

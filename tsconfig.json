@@ -19,10 +19,15 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/shared/*": ["./src/shared/*"],
+      "@/modules/*": ["./src/modules/*"],
+      "@/core/*": ["./src/core/*"],
+      "@/presentation/*": ["./src/presentation/*"],
+      "@/app/*": ["./src/app/*"]
     },
     "types": ["vitest/globals", "vite/client"]
   },
-  "include": ["src", "test", "vitest.config.ts", "vite.config.js", "src/shared/data/repositories/PokeApiRepository.ts"],
+  "include": ["src/**/*", "test", "vitest.config.ts", "vite.config.js", "src/shared/data/repositories/PokeApiRepository.ts"],
   "exclude": ["node_modules", "dist", "test/examples/**/*"]
 }

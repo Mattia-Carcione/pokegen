@@ -1,0 +1,12 @@
+{
+  "dataVersion": "2026.02.05",
+  "timestamp": "2026-02-05T00:00:00Z",
+  "namespaces": {
+    "generation": "2026.02.05",
+    "pokemon": "2026.02.05",
+    "species": "2026.02.05",
+    "evolution": "2026.02.05",
+    "move": "2026.02.05",
+    "type": "2026.02.05"
+  }
+}

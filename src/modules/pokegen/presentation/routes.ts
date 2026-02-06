@@ -1,45 +1,36 @@
-import { PokegenRouteName } from "@/modules/pokegen/presentation/routing/PokegenRouteName";
-// @ts-ignore - Vue 3 dynamic import type declaration
-import HomeView from "@/modules/pokegen/presentation/views/HomeView.vue";
-// @ts-ignore - Vue 3 dynamic import type declaration
-import DetailView from "@/modules/pokegen/presentation/views/DetailView.vue";
-
-/**
- * Percorsi delle rotte per la funzionalità PokéGen.
- */
-export const pokegenRoutes =[
+export const pokegenRoutes = [
     {
-        path: '/generation/:id([1-9]\\d*)',
-        name: PokegenRouteName.Generation,
+        path: '/generation/:id',
+        name: 'Generation',
+        component: () => import('@/modules/pokegen/presentation/views/GenerationView.vue'),
         props: true,
-        component: HomeView,
         meta: {
             seo: {
-                title: 'Generation {id}',
-                description: 'Browse all Pokémon from Generation {id} with stats, types, evolutions, and learnable moves.',
-                pageType: 'CollectionPage',
+                title: 'Generation Details',
+                description: 'Detailed information about the selected Pokémon generation.',
+                pageType: 'WebPage',
                 breadcrumb: [
                     { name: 'Home', url: '/' },
-                    { name: 'Generation {id}', url: '/generation/{id}' },
+                    { name: 'Generation', url: '/generation/:id' },
                 ],
             },
         },
     },
     {
-        path: '/pokemon/:name',
-        name: PokegenRouteName.Pokemon,
+        path: '/pokemon/:id',
+        name: 'Pokemon',
+        component: () => import('@/modules/pokegen/presentation/views/PokemonView.vue'),
         props: true,
-        component: DetailView,
         meta: {
             seo: {
-                title: '{name}',
-                description: 'Discover stats, types, evolutions, and move details (power, accuracy, PP, TM/MT) for {name}.',
-                pageType: 'ItemPage',
+                title: 'Pokémon Details',
+                description: 'Detailed information about the selected Pokémon.',
+                pageType: 'WebPage',
                 breadcrumb: [
                     { name: 'Home', url: '/' },
-                    { name: '{name}', url: '/pokemon/{name}' },
+                    { name: 'Pokémon', url: '/pokemon/:id' },
                 ],
             },
         },
     },
-]
+];

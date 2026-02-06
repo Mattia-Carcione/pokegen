@@ -3,7 +3,7 @@ import { RetryAxiosRequestConfig } from "../types/RetryAxiosRequestconfig";
 import { DEFAULT_OPTS } from "../../../config/HttpConfig";
 import { AxiosRetry } from "../utils/AxiosRetry";
 import { Jitter } from "@/infrastructure/http/utils/Jitter";
-import { delay } from "@/core/utils/async/Delay";
+import { delay } from "@/commons/utils/async/Delay";
 import { ILogger } from "@/core/contracts/infrastructure/logger/ILogger";
 
 /**
