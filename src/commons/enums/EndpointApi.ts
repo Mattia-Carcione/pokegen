@@ -2,7 +2,7 @@
  * PokeAPI endpoints (relative to BASE_API_URL).
  */
 export enum EndpointApi {
-  EntryPoint = "",
+  EntryPoint = "https://pokeapi.co/api/v2/",
   Generation = "generation/",
   Pokedex = "pokedex/",
   Pokemon = "pokemon/",

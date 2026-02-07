@@ -9,10 +9,9 @@ export class GenerationController implements IUseControllerBase {
         private readonly loadByIdUseCase: IUseCaseBase<Generation>
     ) { }
 
-    async loadData(input?: any) {
-        if (input?.id) {
-            return this.loadByIdUseCase.execute(input.id);
-        }
+    async loadData(input?: string) {
+        if (input)
+            return this.loadByIdUseCase.execute(input);
         return this.loadAllUseCase.execute();
     }
 }

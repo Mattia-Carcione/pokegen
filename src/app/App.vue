@@ -2,8 +2,8 @@
 import { onMounted } from "vue";
 import { RouterView } from 'vue-router';
 
-import ScrollToTop from '@/shared/presentation/components/ScrollToTop.vue';
-import LegalNoticeBanner from '@/shared/presentation/components/LegalNoticeBanner.vue';
+// import ScrollToTop from '@/shared/presentation/components/ScrollToTop.vue';
+// import LegalNoticeBanner from '@/shared/presentation/components/LegalNoticeBanner.vue';
 
 onMounted(async () => {
   
@@ -12,8 +12,8 @@ onMounted(async () => {
 
 <template>
     <Suspense>
-      <RouterView />
+      <!-- <RouterView /> -->
     </Suspense>
-    <ScrollToTop />
-    <LegalNoticeBanner />
+    <!-- <ScrollToTop /> -->
+    <!-- <LegalNoticeBanner /> -->
 </template>

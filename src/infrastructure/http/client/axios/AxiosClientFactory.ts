@@ -13,10 +13,15 @@ import { ICacheDb } from "@/core/contracts/infrastructure/database/ICacheDb";
  * Creazione dell'istanza di axios, con interceptor, retry e get/set in cache.
  */
 export class AxiosClientFactory implements IHttpClientFactory {
+    private readonly retry: RetryInterceptor;
+    private readonly cache: CacheInterceptor;
     constructor(
         private readonly cacheDb: ICacheDb,
-        private readonly logger: ILogger
-    ) {}
+        private readonly logger: ILogger,
+    ) {
+        this.retry = new RetryInterceptor(this.logger);
+        this.cache = new CacheInterceptor(this.cacheDb, this.logger);
+}
 
     /**
      * Crea un'istanza di AxiosHttpClient con le configurazioni specificate.
@@ -56,11 +61,11 @@ export class AxiosClientFactory implements IHttpClientFactory {
             }, //default content type accettato
         });
 
-        new RetryInterceptor(this.logger).setRetryAsync(apiClient, opts);
+        this.retry.setRetryAsync(apiClient, opts);
 
-        new CacheInterceptor(this.cacheDb, this.logger).getCache(apiClient);
+        this.cache.getCache(apiClient);
         
-        new CacheInterceptor(this.cacheDb, this.logger).setCache(apiClient);
+        this.cache.setCache(apiClient);
         
         return new AxiosHttpClient(apiClient, this.logger);
     }

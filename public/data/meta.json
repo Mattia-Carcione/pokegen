@@ -1,0 +1,21 @@
+{
+    "name": "PokéGen",
+    "version": "1.0.0",
+    "date": "2026-02-03",
+    "description": "This is a sample project metadata file.",
+    "author": "Mattia Carcione",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mattia-carcione/pokegen.git"
+    },
+    "keywords": [
+        "sample",
+        "project",
+        "metadata"
+    ],
+    "dependencies": {
+        "express": "^4.17.1",
+        "lodash": "^4.17.21"
+    }
+}

@@ -6,6 +6,8 @@ import { NamedResource } from "@/commons/types/CommonTypes";
 export interface TypeDto {
   id: number;
   name: string;
+  move_damage_class?: NamedResource;
+  moves?: NamedResource[];
   damage_relations: {
     double_damage_from: NamedResource[];
     double_damage_to: NamedResource[];
